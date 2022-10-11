@@ -5,17 +5,18 @@
 #include "Game.h"
 
 
-#define SCREEN_X 32
-#define SCREEN_Y 16
+#define SCREEN_X 16
+#define SCREEN_Y 128
 
 #define INIT_PLAYER_X_TILES 4
-#define INIT_PLAYER_Y_TILES 25
+#define INIT_PLAYER_Y_TILES 2
 
 
 PlayScene::PlayScene()
 {
 	map = NULL;
-	player = NULL;
+	player = NULL;	
+	tileMapDispl = 0;
 }
 
 PlayScene::~PlayScene()
@@ -35,7 +36,8 @@ void PlayScene::init()
 	state = "ON";
 
 	initShaders();
-	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	map = TileMap::createTileMap("levels/level01RTYPE.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
@@ -43,12 +45,11 @@ void PlayScene::init()
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 }
-
 void PlayScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
-
+	tileMapDispl += 2;
 	//canviar condicio 
 	if (Game::instance().getKey('1')) {
 		state = "MENU";
@@ -57,12 +58,10 @@ void PlayScene::update(int deltaTime)
 
 void PlayScene::render()
 {
-	glm::mat4 modelview;
-
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
-	modelview = glm::mat4(1.0f);
+	glm::mat4 modelview = glm::translate(glm::mat4(1.0f), glm::vec3(-tileMapDispl, 0.f, 0.f));
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();

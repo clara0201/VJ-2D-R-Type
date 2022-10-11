@@ -26,8 +26,7 @@ public:
 	~TileMap();
 
 	void render() const;
-	void free();
-	
+	void free();	
 	int getTileSize() const { return tileSize; }
 
 	bool collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const;
