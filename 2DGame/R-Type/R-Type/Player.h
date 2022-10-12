@@ -4,6 +4,7 @@
 
 #include "Sprite.h"
 #include "TileMap.h"
+#include "BulletManager.h"
 
 
 // Player is basically a Sprite that represents the player. As such it has
@@ -14,21 +15,25 @@ class Player
 {
 
 public:
-	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
+	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, BulletManager* bulletManager);
 	void update(int deltaTime);
 	void render();
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
+	glm::vec2 getAnimationAndKeyframe();
+	glm::vec2 getPosition();
 	
 private:
 	bool bJumping;
-	glm::ivec2 tileMapDispl, posPlayer;
+	int timeBetweenBullets;
+	glm::ivec2 tileMapDispl, scrollDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;
 	Texture explosionSpritesheet;
 	Sprite *sprite;
 	TileMap *map;
+	BulletManager* bM;
 
 };
 

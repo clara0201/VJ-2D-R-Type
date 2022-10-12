@@ -22,6 +22,7 @@ public:
 
 	void init();
 	void update(int deltaTime);
+	void checkBullets();
 	void render();
 
 	virtual Scene* changeState();
@@ -36,7 +37,9 @@ private:
 	float currentTime;
 	glm::mat4 projection;
 	int tileMapDispl;
-
+	Texture backgroundSpritesheet;
+	Sprite* background;
+	BulletManager bulletManager;
 	string state;
 
 };
