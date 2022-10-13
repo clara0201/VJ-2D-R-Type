@@ -1,7 +1,8 @@
 #include "CreditsScene.h"
 
-CreditsScene::CreditsScene()
+CreditsScene::CreditsScene(MenuScene* menuS)
 {
+	menu = menuS;
 }
 
 CreditsScene::~CreditsScene()
@@ -35,9 +36,8 @@ void CreditsScene::render()
 Scene* CreditsScene::changeState()
 {
 	if (state == "MENU") {
-		Scene* scene = new MenuScene();
-		scene->init();
-		return scene;
+		menu->init();
+		return menu;
 	}
 
 	return this;

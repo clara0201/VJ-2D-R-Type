@@ -6,7 +6,7 @@ class CreditsScene : public Scene
 {
 
 public:
-    CreditsScene();
+    CreditsScene(MenuScene* menuS);
     ~CreditsScene();
 
 	void init();
@@ -21,5 +21,6 @@ private:
 	ShaderProgram texProgram;
 	float currentTime;
 	string state;
+	MenuScene* menu;
 };
 

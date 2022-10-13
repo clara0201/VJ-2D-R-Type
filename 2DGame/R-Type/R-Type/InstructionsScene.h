@@ -6,7 +6,7 @@
 class InstructionsScene : public Scene
 {
 public:
-	InstructionsScene();
+	InstructionsScene(MenuScene* menuS);
 	~InstructionsScene();
 
 	void init();
@@ -21,5 +21,6 @@ private:
 	ShaderProgram texProgram;
 	float currentTime;
 	string state;
+	MenuScene* menu;
 };
 

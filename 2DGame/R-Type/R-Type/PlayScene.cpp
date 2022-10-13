@@ -16,11 +16,12 @@ enum PlayerAnims
 	STAND_UP, STAND_DOWN, STAND_RIGHT, MOVE_UP, MOVE_DOWN, EXPLOSION
 };
 
-PlayScene::PlayScene()
+PlayScene::PlayScene(MenuScene* menuS)
 {
 	map = NULL;
 	player = NULL;	
 	tileMapDispl = 0;
+	menu = menuS;
 }
 
 PlayScene::~PlayScene()
@@ -102,9 +103,9 @@ void PlayScene::checkBullets() {
 Scene* PlayScene::changeState()
 {
 	if (state == "MENU") {
-		Scene* scene = new MenuScene();
-		scene->init();
-		return scene;
+		
+		menu->init();
+		return menu;
 	}
 		
 	return this;

@@ -1,7 +1,8 @@
 #include "InstructionsScene.h"
 
-InstructionsScene::InstructionsScene()
+InstructionsScene::InstructionsScene(MenuScene* menuS)
 {
+	menu = menuS;
 }
 
 InstructionsScene::~InstructionsScene()
@@ -35,9 +36,8 @@ void InstructionsScene::render()
 Scene* InstructionsScene::changeState()
 {
 	if (state == "MENU") {
-		Scene* scene = new MenuScene();
-		scene->init();
-		return scene;
+		menu->init();
+		return menu;
 	}
 
 	return this;

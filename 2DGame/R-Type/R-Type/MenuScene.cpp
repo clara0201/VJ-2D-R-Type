@@ -9,6 +9,9 @@
 
 MenuScene::MenuScene()
 {
+	playS = new PlayScene(this);
+	instructionsS = new InstructionsScene(this);
+	creditsS = new CreditsScene(this);
 }
 
 MenuScene::~MenuScene()
@@ -18,12 +21,18 @@ MenuScene::~MenuScene()
 void MenuScene::init()
 {
 	//placeholder
-	glClearColor(0.9f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	
 	currentTime = 0.f;
 	state = ON;
-	//initShaders();
+	
 
+	
+	//initShaders();
+	
+	//fontText.loadFromFile("images/font.bmp", TEXTURE_PIXEL_FORMAT_RGB);
+
+	
 }
 
 void MenuScene::update(int deltaTime)
@@ -49,20 +58,18 @@ Scene* MenuScene::changeState()
 {
 	switch (state) {
 	case PLAY: {
-		Scene* scene = new PlayScene();
-		scene->init();
-		return scene;
+		playS->init();
+		return playS;
 	}
 	
 	case INSTRUCTIONS: {
-		Scene* instructions = new InstructionsScene();
-		instructions->init();
-		return instructions;
+		instructionsS->init();
+		return instructionsS;
 	}
+
 	case CREDITS: {
-		Scene* credits = new CreditsScene();
-		credits->init();
-		return credits;
+		creditsS->init();
+		return creditsS;
 	}
 	/*
 	case EXIT:
@@ -79,7 +86,6 @@ Scene* MenuScene::changeState()
 
 
 
-void MenuScene::initShaders()
-{
+void MenuScene::initShaders() {
 	
 }

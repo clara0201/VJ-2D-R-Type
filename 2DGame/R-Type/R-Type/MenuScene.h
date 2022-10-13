@@ -36,7 +36,7 @@ private:
 	};
 	MenuState state;
 	float currentTime;
-
+	Scene* playS, * instructionsS, * creditsS;
 
 };
 
