@@ -20,7 +20,7 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 	isPlayer = player;	
 	speed = speedy;
 	scrollDispl = posx;
-	size.x = 8;
+	size.x = 14;
 	size.y = 8;
 
 	spritesheet.loadFromFile("images/bala.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -35,7 +35,7 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 
 void Bullet::update(int deltaTime) {
 		
-	posBullet.x += 5 * speed;	
+	posBullet.x += 1 * speed;	
 	scrollDispl += 1;
 	sprite->update(deltaTime);
 }
