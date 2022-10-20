@@ -5,8 +5,8 @@
 #include "Game.h"
 
 
-#define SCREEN_X 16
-#define SCREEN_Y 128
+#define SCREEN_X 0
+#define SCREEN_Y 0
 
 #define INIT_PLAYER_X_TILES 4
 #define INIT_PLAYER_Y_TILES 2
@@ -35,16 +35,13 @@ PlayScene::~PlayScene()
 
 void PlayScene::init()
 {
-	//placeholder
-	//glClearColor(0.3f, 0.3f, 0.9f, 1.0f);
-
 	state = "ON";
 
 	initShaders();
 	map = TileMap::createTileMap("levels/level01RTYPE.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	backgroundSpritesheet.loadFromFile("images/nivel1.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	background = Sprite::createSprite(glm::ivec2(3070, 192), glm::vec2(1.0f, 1.0f), &backgroundSpritesheet, &texProgram);
-	background->setPosition(glm::vec2(0.0f, 96.0f));
+	background->setPosition(glm::vec2(0.0f, 0.0f));
 	player = new Player();
 	bulletManager.setTileMap(map);
 
@@ -66,6 +63,7 @@ void PlayScene::update(int deltaTime)
 	else {
 		if (animationAndKeyframe[1] == 4) state = "MENU";
 	}
+
 	//canviar condicio 
 	if (Game::instance().getKey('1')) {
 		state = "MENU";
@@ -78,7 +76,7 @@ void PlayScene::render()
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 	glm::mat4 modelview = glm::translate(glm::mat4(1.0f), glm::vec3(-tileMapDispl, 0.f, 0.f));
-	background->setPosition(glm::vec2(45.0f-tileMapDispl, 128.0f));
+	background->setPosition(glm::vec2(35.0f-tileMapDispl, 0.0f));
 	background->render();
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);

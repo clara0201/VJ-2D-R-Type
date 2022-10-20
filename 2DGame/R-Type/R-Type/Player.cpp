@@ -81,6 +81,12 @@ void Player::update(int deltaTime)
 		sprite->changeAnimation(EXPLOSION);
 		posPlayer.y -= 2;
 	}
+	else if (map->collisionMoveUp(glm::ivec2(posPlayer.x + scrollDispl.x + 1, posPlayer.y), glm::ivec2(28, 16), &posPlayer.y)) 
+	{
+		sprite->changeAnimation(EXPLOSION);
+		posPlayer.y += 2;
+	}
+		
 	else if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
 	{		
 		posPlayer.x -= 2;			

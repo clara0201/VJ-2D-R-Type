@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include "ShaderProgram.h"
 #include "Scene.h"
+#include "Texture.h"
+#include "Sprite.h"
 
 
 
@@ -37,6 +39,7 @@ private:
 	MenuState state;
 	float currentTime;
 	Scene* playS, * instructionsS, * creditsS;
-
+	Texture backgroundTex, blastTex;
+	Sprite* background,  * arrow; 
 };
 
