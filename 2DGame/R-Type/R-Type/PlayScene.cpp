@@ -65,7 +65,7 @@ void PlayScene::update(int deltaTime)
 	}
 
 	//canviar condicio 
-	if (Game::instance().getKey('1')) {
+	if (Game::instance().getKey('m') || Game::instance().getKey('M')) {
 		state = "MENU";
 	}
 }

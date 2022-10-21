@@ -11,7 +11,7 @@ enum directions //0, 1, 2, 3
 
 enum anim
 {
-	NORMAL, SPREAD
+	NORMAL, HITWALL
 };
 
 
@@ -23,12 +23,17 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 	size.x = 14;
 	size.y = 8;
 
-	spritesheet.loadFromFile("images/bala.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(14, 8), glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
+	spritesheet.loadFromFile("images/bulletSpritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(16, 8), glm::vec2(0.5f, 1.f), &spritesheet, &shaderProgram);
 
-	sprite->setNumberAnimations(1);
+	sprite->setNumberAnimations(2);
 
-	sprite->setAnimationSpeed(NORMAL, 3); sprite->addKeyframe(NORMAL, glm::vec2(0.0f, 0.0f));	
+		sprite->setAnimationSpeed(NORMAL, 3); 
+		sprite->addKeyframe(NORMAL, glm::vec2(0.0f, 0.0f));
+
+		sprite->setAnimationSpeed(HITWALL, 3);
+		sprite->addKeyframe(HITWALL, glm::vec2(0.5f, 0.0f));
+
 	sprite->changeAnimation(0);
 	sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
 }
@@ -38,6 +43,29 @@ void Bullet::update(int deltaTime) {
 	posBullet.x += 1 * speed;	
 	scrollDispl += 1;
 	sprite->update(deltaTime);
+	int posBulletY = float(posBullet.y);
+	
+	//check collisions with walls
+	if (map->collisionMoveLeft(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8)))
+	{
+	sprite->changeAnimation(HITWALL);
+	
+	}
+	else if (map->collisionMoveRight(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8)))
+	{
+	sprite->changeAnimation(HITWALL);
+	
+	}
+	else if (map->collisionMoveDown(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8), &posBulletY))
+	{
+	sprite->changeAnimation(HITWALL);
+	
+	}
+	else if (map->collisionMoveUp(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8), &posBulletY))
+	{
+	sprite->changeAnimation(HITWALL);
+	
+	}
 }
 
 void Bullet::setTileMap(TileMap* tileMap)
@@ -46,7 +74,7 @@ void Bullet::setTileMap(TileMap* tileMap)
 }
 
 void Bullet::render() {
-	sprite->setPosition(glm::vec2(float(posBullet.x + scrollDispl), float(posBullet.y)));
+	sprite->setPosition(glm::vec2(float(posBullet.x + 25), float(posBullet.y + 5)));
 	sprite->render();
 }
 

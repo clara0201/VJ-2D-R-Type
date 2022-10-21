@@ -41,5 +41,8 @@ private:
 	Scene* playS, * instructionsS, * creditsS;
 	Texture backgroundTex, blastTex;
 	Sprite* background,  * arrow; 
+	glm::mat4 projection;
+
+	int option;
 };
 

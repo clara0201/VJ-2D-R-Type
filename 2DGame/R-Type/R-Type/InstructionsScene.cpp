@@ -24,7 +24,7 @@ void InstructionsScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	//detectar input de l'usuari i canviar variable 'state'
-	if (Game::instance().getKey('1')) {
+	if (Game::instance().getKey(32)) {
 		state = "MENU";
 	}
 }

@@ -21,18 +21,20 @@ MenuScene::~MenuScene()
 void MenuScene::init()
 {
 	
-	
 	currentTime = 0.f;
 	state = ON;
+	option = 1;
 	
 	//Background
-	backgroundTex.loadFromFile("images/titleScreen.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	backgroundTex.loadFromFile("images/titleScreenNum.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	background = Sprite::createSprite(glm::ivec2(512,256), glm::vec2(1.0f,1.0f), &backgroundTex, &texProgram);
 	background->setPosition(glm::vec2(0.0f, 0.0f));
 
-	blastTex.loadFromFile("images/blast.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	/*blastTex.loadFromFile("images/blast.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	arrow = Sprite::createSprite(glm::ivec2(28, 8), glm::vec2(1.0f, 1.0f), &blastTex, &texProgram);
-	arrow->setPosition(glm::vec2(100.0f, 50.0f));
+	arrow->setPosition(glm::vec2(430.0f, 77.0f));*/
+
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 
 
 	initShaders();
@@ -46,22 +48,37 @@ void MenuScene::update(int deltaTime)
 	arrow->update(deltaTime);
 
 	//detectar input de l'usuari i canviar variable 'state'
-	if (Game::instance().getKey('2')) {
+	if (Game::instance().getKey('1')) {
 		state = PLAY;
 	}
-	else if (Game::instance().getKey('3')) {
+	else if (Game::instance().getKey('2')) {
 		state = INSTRUCTIONS;
 	}
-	else if (Game::instance().getKey('4')) {
+	else if (Game::instance().getKey('3')) {
 		state = CREDITS;
 	}
+	
+	if (Game::instance().getSpecialKey(GLUT_KEY_DOWN)){
+		if (option < 3) option++;
+	}
+	else if (Game::instance().getSpecialKey(GLUT_KEY_UP)) {
+		if (option > 1) option--;
+	}	
 }
 
 void MenuScene::render()
 {
+	glm::mat4 modelview;
+	texProgram.use();
+	texProgram.setUniformMatrix4f("projection", projection);
+	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::mat4(1.0f);
+	texProgram.setUniformMatrix4f("modelview", modelview);
+
+
 	
 	background->render();
-	arrow->render();
+	//arrow->render();
 	
 }
 
@@ -83,11 +100,6 @@ Scene* MenuScene::changeState()
 		creditsS->init();
 		return creditsS;
 	}
-	/*
-	case EXIT:
-		//per implementar
-		break;
-	*/
 
 	default:
 		break;
