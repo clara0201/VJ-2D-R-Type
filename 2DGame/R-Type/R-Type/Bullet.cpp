@@ -22,6 +22,7 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 	scrollDispl = posx;
 	size.x = 14;
 	size.y = 8;
+	alive = true;
 
 	spritesheet.loadFromFile("images/bulletSpritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(16, 8), glm::vec2(0.5f, 1.f), &spritesheet, &shaderProgram);
@@ -43,29 +44,37 @@ void Bullet::update(int deltaTime) {
 	posBullet.x += 1 * speed;	
 	scrollDispl += 1;
 	sprite->update(deltaTime);
-	int posBulletY = float(posBullet.y);
+	/*int posBulletY = float(posBullet.y);
 	
 	//check collisions with walls
-	if (map->collisionMoveLeft(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8)))
+	if (map->collisionMoveLeft(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8)) ||
+		map->collisionMoveRight(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8)) ||
+		map->collisionMoveDown(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8), &posBulletY) ||
+		map->collisionMoveUp(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8), &posBulletY))
 	{
 	sprite->changeAnimation(HITWALL);
-	
+	alive = false;
 	}
+
+	
 	else if (map->collisionMoveRight(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8)))
 	{
 	sprite->changeAnimation(HITWALL);
+	alive = false;
 	
 	}
 	else if (map->collisionMoveDown(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8), &posBulletY))
 	{
 	sprite->changeAnimation(HITWALL);
+	alive = false;
 	
 	}
 	else if (map->collisionMoveUp(glm::ivec2(posBullet.x + scrollDispl + 1, posBullet.y), glm::ivec2(8, 8), &posBulletY))
 	{
 	sprite->changeAnimation(HITWALL);
+	alive = false;
 	
-	}
+	}*/
 }
 
 void Bullet::setTileMap(TileMap* tileMap)

@@ -6,7 +6,6 @@
 void Game::init()
 {
 	bPlay = true;
-	
 	scene = new MenuScene();
 	scene->init();
 }

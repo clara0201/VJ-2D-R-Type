@@ -23,19 +23,17 @@ void MenuScene::init()
 	
 	currentTime = 0.f;
 	state = ON;
-	option = 1;
 	
 	//Background
 	backgroundTex.loadFromFile("images/titleScreenNum.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	background = Sprite::createSprite(glm::ivec2(512,256), glm::vec2(1.0f,1.0f), &backgroundTex, &texProgram);
 	background->setPosition(glm::vec2(0.0f, 0.0f));
 
-	/*blastTex.loadFromFile("images/blast.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	blastTex.loadFromFile("images/blast.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	arrow = Sprite::createSprite(glm::ivec2(28, 8), glm::vec2(1.0f, 1.0f), &blastTex, &texProgram);
-	arrow->setPosition(glm::vec2(430.0f, 77.0f));*/
+	arrow->setPosition(glm::vec2(430.0f, 77.0f));
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
-
 
 	initShaders();
 	
@@ -74,8 +72,6 @@ void MenuScene::render()
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
-
-
 	
 	background->render();
 	//arrow->render();

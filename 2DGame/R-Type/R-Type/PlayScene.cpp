@@ -90,8 +90,9 @@ void PlayScene::checkBullets() {
 	for (int i = 0; i < int(activeBullets.size()); ++i) {
 		/*bool collisionX = ((activeBullets[i]->ret_pos().x < (tileMapDispl)) || (activeBullets[i]->ret_pos().x > (SCREEN_WIDTH + tileMapDispl)));
 		bool collisionY = (((activeBullets[i]->ret_pos().y < 0) || (activeBullets[i]->ret_pos().y > SCREEN_HEIGHT)));*/
+
 		glm::vec2 bulletPosition = activeBullets[i]->ret_pos();
-		if (bulletPosition != glm::vec2(0.0f, 0.0f) && map->collisionMoveRight(glm::ivec2(bulletPosition.x-250, bulletPosition.y), glm::ivec2(14, 8))) {
+		if (bulletPosition != glm::vec2(0.0f, 0.0f) && map->collisionMoveRight(glm::ivec2(bulletPosition.x+tileMapDispl+35.0f, bulletPosition.y), glm::ivec2(8, 8))) {
 			activeBullets[i]->~Bullet();
 			activeBullets.erase(activeBullets.begin() + i);
 			bulletManager.set_actBullets(activeBullets);

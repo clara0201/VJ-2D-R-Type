@@ -19,7 +19,7 @@ void BulletManager::createPlayerBullet(float posPlayerx, float posPlayery, Shade
 }
 
 /*void BulletManager::createEnemyBullet(float posEnemyx, float posEnemyy, int direction, bool spreadGun, ShaderProgram& shaderProgram, float speed) {
-	Bullet* new_bull;
+	/*Bullet* new_bull;
 	new_bull = new Bullet;
 	new_bull->setTileMap(map);
 	new_bull->createBullet(posEnemyx, posEnemyy, direction, spreadGun, NO_DEVIATION, 0, shaderProgram, speed);
