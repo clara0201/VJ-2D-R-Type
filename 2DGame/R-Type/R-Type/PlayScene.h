@@ -7,6 +7,7 @@
 #include "TileMap.h"
 #include "Player.h"
 #include "Scene.h"
+#include "MenuScene.h"
 
 
 // Scene contains all the entities of our game.
@@ -17,7 +18,7 @@ class PlayScene : public Scene
 {
 
 public:
-	PlayScene();
+	PlayScene(MenuScene* menuS);
 	~PlayScene();
 
 	void init();
@@ -41,7 +42,7 @@ private:
 	Sprite* background;
 	BulletManager bulletManager;
 	string state;
-
+	MenuScene* menu;
 };
 
 

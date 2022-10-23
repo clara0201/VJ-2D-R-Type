@@ -1,10 +1,10 @@
 #include <cmath>
 #include <iostream>
 #include <GL/glew.h>
-#include <GL/glut.h>
 #include "Player.h"
 #include "Game.h"
 #include "PlayScene.h"
+#include <GL/freeglut_std.h>
 
 
 #define JUMP_ANGLE_STEP 4
@@ -71,7 +71,7 @@ void Player::update(int deltaTime)
 		sprite->changeAnimation(EXPLOSION);
 		posPlayer.x += 2;
 	}
-	else if (map->collisionMoveRight(glm::ivec2(posPlayer.x + scrollDispl.x-20, posPlayer.y), glm::ivec2(28, 16)))
+	else if (map->collisionMoveRight(glm::ivec2(posPlayer.x + scrollDispl.x-10, posPlayer.y), glm::ivec2(28, 16)))
 	{
 		sprite->changeAnimation(EXPLOSION);
 		posPlayer.x -= 2;
@@ -81,13 +81,19 @@ void Player::update(int deltaTime)
 		sprite->changeAnimation(EXPLOSION);
 		posPlayer.y -= 2;
 	}
+	else if (map->collisionMoveUp(glm::ivec2(posPlayer.x + scrollDispl.x + 1, posPlayer.y), glm::ivec2(28, 16), &posPlayer.y)) 
+	{
+		sprite->changeAnimation(EXPLOSION);
+		posPlayer.y += 2;
+	}
+		
 	else if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
 	{		
 		posPlayer.x -= 2;			
 	}
 	else if(Game::instance().getSpecialKey(GLUT_KEY_RIGHT))
 	{
-			posPlayer.x += 2;		
+		posPlayer.x += 2;		
 		
 	}
 	else if (Game::instance().getSpecialKey(GLUT_KEY_UP))
@@ -112,11 +118,11 @@ void Player::update(int deltaTime)
 	{
 		sprite->changeAnimation(STAND_RIGHT);
 	}
-	if ((Game::instance().getKey('z') || Game::instance().getKey('Z')) && timeBetweenBullets <= 0)
-	{
-		bM->createPlayerBullet(posPlayer.x - 16, posPlayer.y + 130, *aux);
-		timeBetweenBullets = 10;
 
+	if (Game::instance().getKey(' ') && timeBetweenBullets <= 0)
+	{
+		bM->createPlayerBullet(posPlayer.x, posPlayer.y, *aux);
+		timeBetweenBullets = 10;
 	}
 	
 	scrollDispl.x += 1;		
