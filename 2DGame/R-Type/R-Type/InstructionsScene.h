@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "ShaderProgram.h"
 #include "Game.h"
+#include "Texture.h"
+#include "Sprite.h"
 
 class InstructionsScene : public Scene
 {
@@ -22,5 +24,8 @@ private:
 	float currentTime;
 	string state;
 	MenuScene* menu;
+	Texture backgroundTex;
+	Sprite* background;
+	glm::mat4 projection;
 };
 
