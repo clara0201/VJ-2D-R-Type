@@ -50,19 +50,28 @@ void PlayScene::init()
 	player->setTileMap(map);
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
+
+	forceUnitTex.loadFromFile("images/forceUnit.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	forceUnit = Sprite::createSprite(glm::ivec2(9, 9), glm::vec2(1.0f, 1.0f), &forceUnitTex, &texProgram);
+	
 }
 void PlayScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	bulletManager.update(deltaTime);
+	forceUnit->update(deltaTime);
+
 	checkBullets();
+
 	glm::vec2 animationAndKeyframe = player->getAnimationAndKeyframe();
 	if(animationAndKeyframe[0] != EXPLOSION)
 		tileMapDispl += 1;	
 	else {
 		if (animationAndKeyframe[1] == 4) state = "MENU";
 	}
+
+	forceUnit->setPosition(glm::vec2(500-tileMapDispl, 100));
 
 	//canviar condicio 
 	if (Game::instance().getKey('m') || Game::instance().getKey('M')) {
@@ -83,6 +92,7 @@ void PlayScene::render()
 	map->render();
 	player->render();
 	bulletManager.render();
+	forceUnit->render();
 }
 
 void PlayScene::checkBullets() {

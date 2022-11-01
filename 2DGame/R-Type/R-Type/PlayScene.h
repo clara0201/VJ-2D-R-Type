@@ -38,11 +38,12 @@ private:
 	float currentTime;
 	glm::mat4 projection;
 	int tileMapDispl;
-	Texture backgroundSpritesheet;
-	Sprite* background;
+	Texture backgroundSpritesheet, forceUnitTex;
+	Sprite* background, *forceUnit;
 	BulletManager bulletManager;
 	string state;
 	MenuScene* menu;
+
 };
 
 
