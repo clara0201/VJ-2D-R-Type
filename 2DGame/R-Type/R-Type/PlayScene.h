@@ -6,6 +6,7 @@
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Scene.h"
 #include "MenuScene.h"
 
@@ -23,6 +24,9 @@ public:
 
 	void init();
 	void update(int deltaTime);
+	void initEnemies();
+	void moveEnemies();
+	void checkHits();
 	void checkBullets();
 	void render();
 
@@ -39,10 +43,16 @@ private:
 	glm::mat4 projection;
 	int tileMapDispl;
 	Texture backgroundSpritesheet;
+	vector<Enemy*> enemyList;
+
 	Sprite* background;
 	BulletManager bulletManager;
 	string state;
 	MenuScene* menu;
+	int cooldown;
+	int directionCooldown;
+	bool movingUp;
+	int enemyIterator;
 };
 
 

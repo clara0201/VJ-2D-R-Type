@@ -139,6 +139,7 @@ glm::vec2 Player::getPosition() {
 	return posPlayer;
 }
 
+
 void Player::setTileMap(TileMap *tileMap)
 {
 	map = tileMap;

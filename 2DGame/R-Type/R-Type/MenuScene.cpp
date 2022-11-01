@@ -98,6 +98,7 @@ Scene* MenuScene::changeState()
 	}
 
 	default:
+		init();
 		break;
 	}
 	return this;

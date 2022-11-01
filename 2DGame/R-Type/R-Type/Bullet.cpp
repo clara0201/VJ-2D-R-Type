@@ -20,7 +20,7 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 	isPlayer = player;	
 	speed = speedy;
 	scrollDispl = posx;
-	size.x = 14;
+	size.x = 16;
 	size.y = 8;
 	alive = true;
 
@@ -88,6 +88,7 @@ void Bullet::render() {
 }
 
 Bullet::~Bullet() {
+	sprite = NULL;
 }
 
 glm::vec2 Bullet::ret_pos() {
@@ -99,7 +100,7 @@ glm::vec2 Bullet::ret_pos() {
 glm::vec2 Bullet::ret_size() {
 	if (this != NULL)
 		return size;
-	return glm::vec2(0.0f, 0.0f);
+	return glm::vec2(14.0f, 8.0f);
 }
 
 bool Bullet::ret_player_bullet() {
