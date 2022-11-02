@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Scene.h"
 #include "MenuScene.h"
+#include "Force.h"
 
 
 // Scene contains all the entities of our game.
@@ -34,6 +35,7 @@ private:
 private:
 	TileMap *map;
 	Player *player;
+	Force* force;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
@@ -43,6 +45,7 @@ private:
 	BulletManager bulletManager;
 	string state;
 	MenuScene* menu;
+	bool forceHit;
 
 };
 

@@ -16,12 +16,15 @@ enum PlayerAnims
 	STAND_UP, STAND_DOWN, STAND_RIGHT, MOVE_UP, MOVE_DOWN, EXPLOSION
 };
 
+
+
 PlayScene::PlayScene(MenuScene* menuS)
 {
 	map = NULL;
 	player = NULL;	
 	tileMapDispl = 0;
 	menu = menuS;
+	force = NULL;
 }
 
 PlayScene::~PlayScene()
@@ -36,6 +39,7 @@ PlayScene::~PlayScene()
 void PlayScene::init()
 {
 	state = "ON";
+	forceHit = false;
 
 	initShaders();
 	map = TileMap::createTileMap("levels/level01RTYPE.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -54,13 +58,19 @@ void PlayScene::init()
 	forceUnitTex.loadFromFile("images/forceUnit.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	forceUnit = Sprite::createSprite(glm::ivec2(9, 9), glm::vec2(1.0f, 1.0f), &forceUnitTex, &texProgram);
 	
+	force = new Force();
+	force->init(texProgram);
 }
+
+
+
 void PlayScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	bulletManager.update(deltaTime);
 	forceUnit->update(deltaTime);
+	force->update(deltaTime);
 
 	checkBullets();
 
@@ -71,9 +81,16 @@ void PlayScene::update(int deltaTime)
 		if (animationAndKeyframe[1] == 4) state = "MENU";
 	}
 
-	forceUnit->setPosition(glm::vec2(500-tileMapDispl, 100));
+	forceUnit->setPosition(glm::vec2(500 - tileMapDispl, 100));
+	
+	//check collision with force unit (28,16 is player size)
+	bool forceColX = player->getPosition().x + 28 >= forceUnit->getPosition().x;
+	bool forceColY = player->getPosition().y + 16 >= forceUnit->getPosition().y;
+	if (forceColX && forceColY && !forceHit) {
+		forceHit = true;
+		force->enable();
+	}
 
-	//canviar condicio 
 	if (Game::instance().getKey('m') || Game::instance().getKey('M')) {
 		state = "MENU";
 	}
@@ -92,7 +109,8 @@ void PlayScene::render()
 	map->render();
 	player->render();
 	bulletManager.render();
-	forceUnit->render();
+	if(!forceHit) forceUnit->render();
+	force->render();
 }
 
 void PlayScene::checkBullets() {
