@@ -30,8 +30,8 @@ void Force::update(int deltaTime)
 {
 	force->update(deltaTime);
 
-	checkCollision();
-	if (attached) attachPlayer();
+	//checkCollision();
+	attachPlayer();
 }
 
 void Force::render()
@@ -41,16 +41,20 @@ void Force::render()
 
 void Force::enable() {
 	enabled = true;
-	force->setPosition(glm::ivec2(100, 200));
-
+	//force->setPosition(glm::ivec2(100, 200));
 }
 
 void Force::checkCollision()
 {
-	bool forceColX = player->getPosition().x + 28 >= force->getPosition().x && player->getPosition().x + 28 <= force->getPosition().x + 16;
-	bool forceColY = player->getPosition().y + 16 >= force->getPosition().y && player->getPosition().x + 28 <= force->getPosition().x + 12;
-	
-	if (forceColX && forceColY && !attached) attached = true;
+	glm::ivec2 posPlayer = player->getPosition();
+	glm::ivec2 posForce = force->getPosition();
+
+	bool collisionX = ((posForce.x >= posPlayer.x) && ((posPlayer.x + 28) >= posForce.x));
+	bool collisionY = ((posForce.x >= posPlayer.y) && (posPlayer.y + 16) >= posForce.y);
+	if (collisionX && collisionY && !attached)
+	{
+		attached = true;
+	}
 }
 
 void Force::attachPlayer()

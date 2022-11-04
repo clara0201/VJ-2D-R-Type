@@ -82,10 +82,10 @@ void PlayScene::update(int deltaTime)
 
 	forceUnit->setPosition(glm::vec2(500 - tileMapDispl, 100));
 	
-	
 	if(!forceHit) checkCollisionForceUnit();
-
-	if (forceHit) force->update(deltaTime);
+	else {
+		force->update(deltaTime);
+	}
 
 	if (Game::instance().getKey('m') || Game::instance().getKey('M')) {
 		state = "MENU";
@@ -93,18 +93,17 @@ void PlayScene::update(int deltaTime)
 }
 
 void PlayScene::checkCollisionForceUnit() {
-	//check collision with force unit (28,16 is player size)
+	//check collision with force unit(28, 16 is player size)
 	glm::ivec2 posPlayer = player->getPosition();
 	glm::ivec2 posForceUnit = forceUnit->getPosition();
 
-	glm::ivec2 posPMin = glm::ivec2(posPlayer.x, posPlayer.y + 16);
-	glm::ivec2 posPMax = glm::ivec2(posPlayer.x + 28, posPlayer.y);
+	bool collisionX = ((posForceUnit.x >= posPlayer.x) &&
+		((posPlayer.x + 28) >= posForceUnit.x));
 
-	glm::ivec2 posFUMin = glm::ivec2(posForceUnit.x, posForceUnit.y + 9);
-	glm::ivec2 posFUMax = glm::ivec2(posForceUnit.x + 9, posForceUnit.y);
-
-	if (posPMin.x < posFUMax.x && posFUMin.x < posPMax.x &&
-		posPMin.y < posFUMax.y && posFUMin.y < posPMax.y && !forceHit) {
+	bool collisionY = ((posForceUnit.x + 9 >= posPlayer.y) &&
+		(posPlayer.y + 16) >= posForceUnit.y);
+	if (collisionX && collisionY)
+	{
 		forceHit = true;
 		force->enable();
 	}
