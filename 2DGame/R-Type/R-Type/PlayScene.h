@@ -24,6 +24,7 @@ public:
 
 	void init();
 	void update(int deltaTime);
+	void checkCollisionForceUnit();
 	void checkBullets();
 	void render();
 
