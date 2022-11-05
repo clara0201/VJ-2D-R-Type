@@ -139,6 +139,7 @@ glm::vec2 Player::getPosition() {
 	return posPlayer;
 }
 
+
 void Player::setTileMap(TileMap *tileMap)
 {
 	map = tileMap;
@@ -150,6 +151,11 @@ void Player::setPosition(const glm::vec2 &pos)
 {
 	posPlayer = pos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+}
+void Player::hit()
+{
+	sprite->changeAnimation(EXPLOSION);	
+
 }
 
 

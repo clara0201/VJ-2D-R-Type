@@ -14,28 +14,25 @@ void BulletManager::createPlayerBullet(float posPlayerx, float posPlayery, Shade
 	Bullet* new_bull;
 	new_bull = new Bullet;
 	new_bull->setTileMap(map);
-	new_bull->createBullet(posPlayerx, posPlayery, 1, shaderProgram, 1.5f);
+	new_bull->createBullet(posPlayerx, posPlayery, 1, shaderProgram, 1.5f, 0, 1.f, 0.f);
 	activeBullets.emplace_back(new_bull);	
 }
 
-/*void BulletManager::createEnemyBullet(float posEnemyx, float posEnemyy, int direction, bool spreadGun, ShaderProgram& shaderProgram, float speed) {
-	/*Bullet* new_bull;
+void BulletManager::createEnemyBullet(float posEnemyx, float posEnemyy, float posPlayerx, float posPlayery, ShaderProgram& shaderProgram) {
+	Bullet* new_bull;
 	new_bull = new Bullet;
+	float directionX = posPlayerx - posEnemyx;
+	float directionY = posPlayery - posEnemyy;
+	float squaredX= directionX * directionX;
+	float squaredY = directionY * directionY;
+	float division = sqrt(squaredX + squaredY);
+	directionX = directionX / division;
+	directionY = directionY / division;
 	new_bull->setTileMap(map);
-	new_bull->createBullet(posEnemyx, posEnemyy, direction, spreadGun, NO_DEVIATION, 0, shaderProgram, speed);
-	if (spreadGun) {
-		new_bull = new Bullet;
-		new_bull->setTileMap(map);
-		new_bull->createBullet(posEnemyx, posEnemyy, direction, spreadGun, DEVIATION_2L, 0, shaderProgram, speed);
-		activeBullets.emplace_back(new_bull);
-
-		new_bull = new Bullet;
-		new_bull->setTileMap(map);
-		new_bull->createBullet(posEnemyx, posEnemyy, direction, spreadGun, DEVIATION_2R, 0, shaderProgram, speed);
-		activeBullets.emplace_back(new_bull);
-	}
+	new_bull->createBullet(posEnemyx, posEnemyy, 1, shaderProgram, 1.5f, 1, directionX, directionY);	
 	activeBullets.emplace_back(new_bull);
-}*/
+
+}
 
 void BulletManager::update(int deltaTime) {
 	for (int i = 0; i < int(activeBullets.size()); ++i) {

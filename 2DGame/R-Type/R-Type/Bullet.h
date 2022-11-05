@@ -5,7 +5,7 @@
 class Bullet
 {
 public:
-	void createBullet(float posx, float posy, bool player, ShaderProgram& shaderProgram, float speedy);
+	void createBullet(float posx, float posy, bool player, ShaderProgram& shaderProgram, float speedy, int typeOfBullet, float desviationX, float desviationY);
 	void update(int deltaTime);
 	void render();
 	void setTileMap(TileMap* tileMap);
@@ -21,8 +21,11 @@ private:
 	bool spreadBullet;
 	float speed;
 	int scrollDispl;
+	float desvX;
+	float desvY;
 	glm::vec2 posBullet, size;
 	int dir;
+	int typeOf;
 	Texture spritesheet;
 	Sprite* sprite;
 	TileMap* map;
