@@ -10,6 +10,8 @@
 #define SCREEN_Y 0
 #define FLOWER 0
 #define BUTTERFLY 1
+#define BOSS 3
+
 
 
 #define INIT_PLAYER_X_TILES 4
@@ -67,7 +69,7 @@ void PlayScene::init()
 }
 void PlayScene::initEnemies() {
 	
-	int number_of_enemies = 56; //cuantos enemigos hay en el nivel
+	int number_of_enemies = 57; //cuantos enemigos hay en el nivel
 	for (int i = 0; i < number_of_enemies; ++i) {
 		float enemy_x;
 		int enemy_y;
@@ -241,6 +243,9 @@ void PlayScene::initEnemies() {
 		case 56:
 			enemy_x = 70.5f; enemy_y = 8; typeofEnemy = FLOWER;
 			break;
+		case 57:
+			enemy_x = 190.f; enemy_y = 6; typeofEnemy = BOSS;
+			break;
 	
 		}
 		Enemy* enemy_aux;
@@ -271,7 +276,8 @@ void PlayScene::checkHits() {
 			bool collisionY = (((enemyList[j]->ret_pos().y + enemyList[j]->ret_size().y+ 1.5f) >= activeBullets[i]->ret_pos().y) &&
  				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y + 1.5f) >= enemyList[j]->ret_pos().y));
 
-			if (collisionX && collisionY) {					
+			if (collisionX && collisionY) {	
+
  				activeBullets[i]->~Bullet();
 				activeBullets.erase(activeBullets.begin() + i);
 				bulletManager.set_actBullets(activeBullets);
@@ -303,7 +309,7 @@ void PlayScene::checkHits() {
 			bool collisionY = (((flowerList[j]->ret_pos().y + flowerList[j]->ret_size().y + 1.5f) >= activeBullets[i]->ret_pos().y) &&
 				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y + 1.5f) >= flowerList[j]->ret_pos().y));
 
-			if (collisionX && collisionY) {
+			if (collisionX && collisionY) {				
 				activeBullets[i]->~Bullet();
 				activeBullets.erase(activeBullets.begin() + i);
 				bulletManager.set_actBullets(activeBullets);
@@ -364,9 +370,9 @@ void PlayScene::update(int deltaTime)
 	butterflyShootCooldown--;
 
 	bulletManager.update(deltaTime);
+	checkBullets();
 	moveEnemies();
 
-	checkBullets();
 	checkHits();
 	//checkEnemiesHits();
 	
@@ -410,14 +416,22 @@ void PlayScene::render()
 void PlayScene::checkBullets() {
 	vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
 	for (int i = 0; i < int(activeBullets.size()); ++i) {
-		/*bool collisionX = ((activeBullets[i]->ret_pos().x < (tileMapDispl)) || (activeBullets[i]->ret_pos().x > (SCREEN_WIDTH + tileMapDispl)));
-		bool collisionY = (((activeBullets[i]->ret_pos().y < 0) || (activeBullets[i]->ret_pos().y > SCREEN_HEIGHT)));*/
-
 		glm::vec2 bulletPosition = activeBullets[i]->ret_pos();
 		if (bulletPosition != glm::vec2(0.0f, 0.0f) && map->collisionMoveRight(glm::ivec2(bulletPosition.x+tileMapDispl+35.0f, bulletPosition.y), glm::ivec2(8, 8))) {
 			activeBullets[i]->~Bullet();
 			activeBullets.erase(activeBullets.begin() + i);
 			bulletManager.set_actBullets(activeBullets);
+		}
+		
+		if (false)
+		{
+			bool collisionX = (((bulletPosition.x + 6 + 1.5f) >= player->getPosition().x + tileMapDispl) &&
+				((player->getPosition().x + 28 + tileMapDispl) >= bulletPosition.x));
+			//colision en las Y
+			bool collisionY = (((bulletPosition.y + 6 + 1.5f) >= player->getPosition().y) &&
+				((player->getPosition().y + 16 + 1.5f) >= bulletPosition.y));
+			if (bulletPosition != glm::vec2(0.0f, 0.0f) && collisionX && collisionY)
+				player->hit();
 		}
 	}
 }

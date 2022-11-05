@@ -9,6 +9,7 @@
 #define FLOWER 0
 #define BUTTERFLY 1
 #define FLY 2
+#define BOSS 3
 
 void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Player* target, int typeOf, BulletManager* bulletManager)
 {
@@ -38,6 +39,14 @@ void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Play
 		sprite->changeAnimation(FLY);
 
 
+	}
+	else if (typeOf == BOSS) {
+		health = 20;
+
+		spritesheet.loadFromFile("images/bossTail.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(glm::ivec2(67, 84), glm::vec2(1.0f, 1.0f), &spritesheet, &shaderProgram);
+
+		sprite->setPosition(glm::vec2(float(posEnemy.x), float(posEnemy.x)));
 	}
 	cooldown = 50;
 	timeToMove = 10;
@@ -70,9 +79,9 @@ void Enemy::update(int deltaTime)
 			movingUp = !movingUp;
 		directionCooldown = 20;
 	}
-	scrollDispl += 1;
+	scrollDispl += 0;
 	if (timeToMove <= 0) {
-		posEnemy.x = posEnemy.x- 5.f;
+		if(typeofEnemy != BOSS)posEnemy.x = posEnemy.x- 5.f;
 		iterator++;
 		timeToMove = 10;		
 	}
