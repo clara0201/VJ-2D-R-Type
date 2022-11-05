@@ -26,7 +26,9 @@ public:
 	void update(int deltaTime);
 	void initEnemies();
 	void moveEnemies();
+	void stopEnemies();
 	void checkHits();
+	void checkEnemiesHits();
 	void checkBullets();
 	void render();
 
@@ -44,6 +46,7 @@ private:
 	int tileMapDispl;
 	Texture backgroundSpritesheet;
 	vector<Enemy*> enemyList;
+	vector<Enemy*> flowerList;
 
 	Sprite* background;
 	BulletManager bulletManager;
@@ -52,7 +55,8 @@ private:
 	int cooldown;
 	int directionCooldown;
 	bool movingUp;
-	int enemyIterator;
+	int flowerIterator;
+	int butterflyShootCooldown;
 };
 
 

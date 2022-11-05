@@ -13,35 +13,57 @@ enum anim
 {
 	NORMAL, HITWALL
 };
+enum bulletTypes
+{
+	PLAYER, BUTTERFLY
+};
 
 
-void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& shaderProgram, float speedy) {	
-	posBullet = glm::vec2(float(posx), float(posy));
+void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& shaderProgram, float speedy, int typeOfBullet, float desviationX, float desviationY) {	
+	posBullet = glm::vec2(float(posx), float(posy));	
 	isPlayer = player;	
-	speed = speedy;
-	scrollDispl = posx;
-	size.x = 16;
-	size.y = 8;
-	alive = true;
+	desvY = desviationY;
+	desvX = desviationX;
+	if (typeOfBullet == PLAYER) {
+		size.x = 16;
+		size.y = 8;
 
-	spritesheet.loadFromFile("images/bulletSpritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(16, 8), glm::vec2(0.5f, 1.f), &spritesheet, &shaderProgram);
+		spritesheet.loadFromFile("images/bulletSpritesheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(glm::ivec2(16, 8), glm::vec2(0.5f, 1.f), &spritesheet, &shaderProgram);
 
-	sprite->setNumberAnimations(2);
+		sprite->setNumberAnimations(2);
 
-		sprite->setAnimationSpeed(NORMAL, 3); 
+		sprite->setAnimationSpeed(NORMAL, 3);
 		sprite->addKeyframe(NORMAL, glm::vec2(0.0f, 0.0f));
 
 		sprite->setAnimationSpeed(HITWALL, 3);
 		sprite->addKeyframe(HITWALL, glm::vec2(0.5f, 0.0f));
 
-	sprite->changeAnimation(0);
-	sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
+		sprite->changeAnimation(0);
+		sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
+	}
+	else if (typeOfBullet == BUTTERFLY) {
+		size.x = 6;
+		size.y = 6;
+
+		spritesheet.loadFromFile("images/butterflyBullet.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(glm::ivec2(6, 6), glm::vec2(1.0f, 1.0f), &spritesheet, &shaderProgram);
+
+		sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
+	}
+	speed = speedy;
+	typeOf = typeOfBullet;
+	scrollDispl = posx;
+	size.x = 16;
+	size.y = 8;
+	alive = true;
+
 }
 
 void Bullet::update(int deltaTime) {
 		
-	posBullet.x += 1 * speed;	
+	posBullet.x += 1 * speed* desvX;	
+	posBullet.y += 1 * speed *desvY;
 	scrollDispl += 1;
 	sprite->update(deltaTime);
 	/*int posBulletY = float(posBullet.y);
@@ -83,7 +105,8 @@ void Bullet::setTileMap(TileMap* tileMap)
 }
 
 void Bullet::render() {
-	sprite->setPosition(glm::vec2(float(posBullet.x + 25), float(posBullet.y + 5)));
+	if(typeOf == PLAYER)sprite->setPosition(glm::vec2(float(posBullet.x + 25), float(posBullet.y + 5)));
+	else sprite->setPosition(glm::vec2(float(posBullet.x + 25), float(posBullet.y + 5)));
 	sprite->render();
 }
 

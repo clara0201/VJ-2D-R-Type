@@ -9,6 +9,7 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 #define FLOWER 0
+#define BUTTERFLY 1
 
 
 #define INIT_PLAYER_X_TILES 4
@@ -35,10 +36,13 @@ PlayScene::~PlayScene()
 		delete player;
 	for (int i = 0; i < enemyList.size(); ++i)		
 		enemyList[i] = NULL;
+	for (int i = 0; i < flowerList.size(); ++i)
+		enemyList[i] = NULL;
 	cooldown = 5;
-	directionCooldown = 60;
+	directionCooldown = 300;
+	butterflyShootCooldown = 50;
 	movingUp = true;
-	enemyIterator = 0;
+	flowerIterator = 0;
 }
 
 
@@ -63,47 +67,179 @@ void PlayScene::init()
 }
 void PlayScene::initEnemies() {
 	
-	int number_of_enemies = 12; //cuantos enemigos hay en el nivel
+	int number_of_enemies = 56; //cuantos enemigos hay en el nivel
 	for (int i = 0; i < number_of_enemies; ++i) {
-		int enemy_x;
+		float enemy_x;
 		int enemy_y;
 		int typeofEnemy;
 		switch (i + 1) { //enemy_list
 		case 1:
-			enemy_x = 16; enemy_y = 6; typeofEnemy = FLOWER;//primera
+			enemy_x = 16; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
 		case 2:
-			enemy_x = 15; enemy_y = 6; typeofEnemy = FLOWER;
+			enemy_x = 16.5f; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
 		case 3:
-			enemy_x = 14; enemy_y = 6; typeofEnemy = FLOWER;
+			enemy_x = 17; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
 		case 4:
-			enemy_x = 24; enemy_y = 8; typeofEnemy = FLOWER; //segunda
+			enemy_x = 17.5f; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
 		case 5:
-			enemy_x = 23; enemy_y = 8; typeofEnemy = FLOWER;
+			enemy_x = 18.f; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
 		case 6:
-			enemy_x = 22; enemy_y = 8; typeofEnemy = FLOWER; 
+			enemy_x = 24.f; enemy_y = 4; typeofEnemy = FLOWER; 
 			break;
 		case 7:
-			enemy_x = 32; enemy_y = 4; typeofEnemy = FLOWER; //tercera
+			enemy_x = 24.5f; enemy_y = 4; typeofEnemy = FLOWER; 
 			break;
 		case 8:
-			enemy_x = 31; enemy_y = 4; typeofEnemy = FLOWER;
+			enemy_x = 25.f; enemy_y = 4; typeofEnemy = FLOWER; 
 			break;
 		case 9:
-			enemy_x = 30; enemy_y = 4; typeofEnemy = FLOWER;
+			enemy_x = 25.5f; enemy_y = 4; typeofEnemy = FLOWER; 
 			break;
 		case 10:
-			enemy_x = 43; enemy_y = 4; typeofEnemy = FLOWER;
+			enemy_x = 26.f; enemy_y = 4; typeofEnemy = FLOWER; 
 			break;
 		case 11:
-			enemy_x = 42; enemy_y = 4; typeofEnemy = FLOWER;
+			enemy_x = 40.f; enemy_y = 8; typeofEnemy = FLOWER;
 			break;
 		case 12:
-			enemy_x = 41; enemy_y = 4; typeofEnemy = FLOWER;
+			enemy_x = 40.5f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 13:
+			enemy_x = 41.f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 14:
+			enemy_x = 41.5f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 15:
+			enemy_x = 42.f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 16:
+			enemy_x = 30.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 17:
+			enemy_x = 31.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 18:
+			enemy_x = 32.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 19:
+			enemy_x = 33.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 20:
+			enemy_x = 34.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 21:
+			enemy_x = 38.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 22:
+			enemy_x = 39.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 23:
+			enemy_x = 40.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 24:
+			enemy_x = 41.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 25:
+			enemy_x = 42.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 26:
+			enemy_x = 18.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 27:
+			enemy_x = 19.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 28:
+			enemy_x = 20.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 29:
+			enemy_x = 21.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 30:
+			enemy_x = 22.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 31:
+			enemy_x = 43.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 32:
+			enemy_x = 44.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 33:
+			enemy_x = 45.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 34:
+			enemy_x = 46.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 35:
+			enemy_x = 47.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 36:
+			enemy_x = 50.5f; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 37:
+			enemy_x = 50.5f; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 38:
+			enemy_x = 51.f; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 39:
+			enemy_x = 51.5f; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 40:
+			enemy_x = 52.f; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 41:
+			enemy_x = 64.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 42:
+			enemy_x = 65.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 43:
+			enemy_x = 67.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 44:
+			enemy_x = 68.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 45:
+			enemy_x = 60.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 46:
+			enemy_x = 61.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 47:
+			enemy_x = 62.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 48:
+			enemy_x = 63.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 49:
+			enemy_x = 67.f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 50:
+			enemy_x = 67.5f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 51:
+			enemy_x = 68.f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 52:
+			enemy_x = 68.5f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 53:
+			enemy_x = 69.f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 54:
+			enemy_x = 69.5f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 55:
+			enemy_x = 70.f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 56:
+			enemy_x = 70.5f; enemy_y = 8; typeofEnemy = FLOWER;
 			break;
 	
 		}
@@ -112,105 +248,112 @@ void PlayScene::initEnemies() {
 		enemy_aux->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, player, typeofEnemy, &bulletManager);
 		enemy_aux->setTileMap(map);
 		enemy_aux->setPosition(glm::vec2(enemy_x * map->getTileSize(), enemy_y * map->getTileSize()));
-		enemyList.push_back(enemy_aux);
+		if (typeofEnemy == FLOWER) flowerList.push_back(enemy_aux);
+		else enemyList.push_back(enemy_aux);
 	}
 }
 void PlayScene::checkHits() {
 	vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
 	for (int j = 0; j < int(enemyList.size()-1); ++j) {
-		for (int i = 0; i < int(activeBullets.size()-1); ++i) {
-			if (true) {
-				//colision en las X
-				//glm::ivec2(bulletPosition.x + tileMapDispl + 35.0f, bulletPosition.y)
-				Enemy* enemy = enemyList[j];
- 				Bullet* bullet = activeBullets[i];
-				glm::vec2 enemyPos = enemy->ret_pos();
-				glm::vec2 enemySize = enemy->ret_size();			
-				glm::vec2 bulletPos = bullet->ret_pos();
-				glm::vec2 bulletSize = bullet->ret_size();
+		for (int i = 0; i < int(activeBullets.size()-1); ++i) {			
+			//colision en las X
+			//glm::ivec2(bulletPosition.x + tileMapDispl + 35.0f, bulletPosition.y)
+			Enemy* enemy = enemyList[j];
+ 			Bullet* bullet = activeBullets[i];
+			glm::vec2 enemyPos = enemy->ret_pos();
+			glm::vec2 enemySize = enemy->ret_size();			
+			glm::vec2 bulletPos = bullet->ret_pos();
+			glm::vec2 bulletSize = bullet->ret_size();
 
- 				bool collisionX = (((enemyList[j]->ret_pos().x + enemyList[j]->ret_size().x) >= activeBullets[i]->ret_pos().x + tileMapDispl+ 30.0f) &&
-					((activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x+ tileMapDispl+ 30.0f) >= enemyList[j]->ret_pos().x));
-				//colision en las Y
-				bool collisionY = (((enemyList[j]->ret_pos().y + enemyList[j]->ret_size().y) >= activeBullets[i]->ret_pos().y) &&
- 					((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y) >= enemyList[j]->ret_pos().y));
+ 			bool collisionX = (((enemyList[j]->ret_pos().x + enemyList[j]->ret_size().x+ 1.5f) >= activeBullets[i]->ret_pos().x + tileMapDispl+ 38.0f) &&
+				((activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x+ tileMapDispl+ 38.0f) >= enemyList[j]->ret_pos().x));
+			//colision en las Y
+			bool collisionY = (((enemyList[j]->ret_pos().y + enemyList[j]->ret_size().y+ 1.5f) >= activeBullets[i]->ret_pos().y) &&
+ 				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y + 1.5f) >= enemyList[j]->ret_pos().y));
 
-				if (collisionX && collisionY) {
- 					activeBullets[i]->~Bullet();
-					activeBullets.erase(activeBullets.begin() + i);
-					bulletManager.set_actBullets(activeBullets);
-					enemyList[j]->hit();					
- 					if (enemyList[j]->health_remaining() <= 0) {						 						
-  						enemyList[j] = NULL;
-  						enemyList.erase(enemyList.begin() + j);
+			if (collisionX && collisionY) {					
+ 				activeBullets[i]->~Bullet();
+				activeBullets.erase(activeBullets.begin() + i);
+				bulletManager.set_actBullets(activeBullets);
+				enemyList[j]->hit();					
+ 				if (enemyList[j]->health_remaining() <= 0) {						 						
+  					enemyList[j] = NULL;
+  					enemyList.erase(enemyList.begin() + j);
 
-					}
 				}
 			}
-			//else {
-			//	bool collisionX = (((activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x) >= player->ret_pos().x) &&
-			//		((player->ret_pos().x + player->ret_size().x) >= activeBullets[i]->ret_pos().x));
-			//	//bool collisionY = (((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y) >= player->ret_pos().y) &&
-			//	//	((player->ret_pos().y + player->ret_size().y) >= enemyList[j]->ret_pos().y));
-			//	bool collisionY = (((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y) >= (player->ret_pos().y)) &&
-			//		(((player->ret_pos().y) + player->ret_size().y) >= activeBullets[i]->ret_pos().y));
 
-			//	if (collisionX && collisionY && !player->ret_hurt()) {
-			//		player->hit();
-			//		activeBullets[i]->~Bullet();
-			//		activeBullets.erase(activeBullets.begin() + i);
-			//	}
-			//}
 		}
 	}
-	//if (boss != NULL) {
-	//	for (int i = 0; i < int(activeBullets.size()); ++i) {
-	//		if (activeBullets[i]->ret_player_bullet()) {
-	//			//colision en las X
-	//			bool collisionX = (((boss->ret_pos().x + boss->ret_size().x) >= activeBullets[i]->ret_pos().x) &&
-	//				((activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x) >= boss->ret_pos().x));
-	//			//colision en las Y
-	//			bool collisionY = (((boss->ret_pos().y + boss->ret_size().y) >= activeBullets[i]->ret_pos().y) &&
-	//				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y) >= boss->ret_pos().y));
+	//vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
+	for (int j = 0; j < int(flowerList.size() - 1); ++j) {
+		for (int i = 0; i < int(activeBullets.size() - 1); ++i) {
+			//colision en las X
+			//glm::ivec2(bulletPosition.x + tileMapDispl + 35.0f, bulletPosition.y)
+			Enemy* enemy = flowerList[j];
+			Bullet* bullet = activeBullets[i];
+			glm::vec2 enemyPos = enemy->ret_pos();
+			glm::vec2 enemySize = enemy->ret_size();
+			glm::vec2 bulletPos = bullet->ret_pos();
+			glm::vec2 bulletSize = bullet->ret_size();
 
-	//			if (collisionX && collisionY) {
-	//				boss->hit();
-	//				activeBullets[i]->~Bullet();
-	//				activeBullets.erase(activeBullets.begin() + i);
-	//			}
-	//		}
-	//		else {
-	//			bool collisionX = (((activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x) >= player->ret_pos().x) &&
-	//				((player->ret_pos().x + player->ret_size().x) >= activeBullets[i]->ret_pos().x));
-	//			bool collisionY = (((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y) >= (player->ret_pos().y)) &&
-	//				(((player->ret_pos().y) + player->ret_size().y) >= activeBullets[i]->ret_pos().y));
+			bool collisionX = (((flowerList[j]->ret_pos().x + flowerList[j]->ret_size().x + 1.5f) >= activeBullets[i]->ret_pos().x + tileMapDispl + 38.0f) &&
+				((activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x + tileMapDispl + 38.0f) >= flowerList[j]->ret_pos().x));
+			//colision en las Y
+			bool collisionY = (((flowerList[j]->ret_pos().y + flowerList[j]->ret_size().y + 1.5f) >= activeBullets[i]->ret_pos().y) &&
+				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y + 1.5f) >= flowerList[j]->ret_pos().y));
 
-	//			if (collisionX && collisionY && !player->ret_hurt()) {
-	//				player->hit();
-	//				activeBullets[i]->~Bullet();
-	//				activeBullets.erase(activeBullets.begin() + i);
-	//			}
-	//		}
-	//	}
-	//}
+			if (collisionX && collisionY) {
+				activeBullets[i]->~Bullet();
+				activeBullets.erase(activeBullets.begin() + i);
+				bulletManager.set_actBullets(activeBullets);
+				flowerList[j]->hit();
+				if (flowerList[j]->health_remaining() <= 0) {
+					flowerList[j] = NULL;
+					flowerList.erase(flowerList.begin() + j);
+
+				}
+			}
+
+		}
+	}
 }
 void PlayScene:: moveEnemies() {
 	
 	if (cooldown <= 0) {
 		cooldown = 5;
-		enemyIterator++;
+		flowerIterator++;
 	}
 	if (directionCooldown <= 0) {
-		directionCooldown = 60;		
+		directionCooldown = 300;		
 		movingUp = !movingUp;
 	}
-		Enemy* enemy = enemyList[enemyIterator % enemyList.size()];
-		glm::ivec2 position = enemy->ret_pos();
-		if (movingUp)  position = glm::vec2(position.x, position.y - 1);
-		else position = glm::vec2(position.x, position.y + 1);
-		enemy->setPosition(position);
-	
+	if (butterflyShootCooldown <= 0) {
+		butterflyShootCooldown = 50;
+		Enemy* butterfly = enemyList[rand() % enemyList.size()];
+		bulletManager.createEnemyBullet(butterfly->ret_pos().x - tileMapDispl, butterfly->ret_pos().y, player->getPosition().x, player->getPosition().y, texProgram);
+	}
+		Enemy* flower = flowerList[flowerIterator % flowerList.size()];
+		glm::ivec2 position = flower->ret_pos();
+		if (movingUp)  position = glm::vec2(position.x, position.y - 2.5f);
+		else position = glm::vec2(position.x, position.y + 2.f);
+			
+		flower->setPosition(position);
+		for (int i = 0; i < enemyList.size(); i++) {
+			Enemy* enemy = enemyList[i];
+			glm::ivec2 position = enemy->ret_pos();
+			if(enemy->ret_type() == BUTTERFLY) {
+				if (enemy->ret_direction()) {
+					position = glm::vec2(position.x, position.y - 1.5f);
+					enemy->setPosition(position);
+				}
+				else {
+					position = glm::vec2(position.x, position.y + 1.5f);
+					enemy->setPosition(position);
+				}
+			}
 
+		}		
 }
 void PlayScene::update(int deltaTime)
 {
@@ -218,11 +361,15 @@ void PlayScene::update(int deltaTime)
 	player->update(deltaTime);
 	cooldown--;
 	directionCooldown--;
+	butterflyShootCooldown--;
+
 	bulletManager.update(deltaTime);
+	moveEnemies();
+
 	checkBullets();
 	checkHits();
-	moveEnemies();
-	render();
+	//checkEnemiesHits();
+	
 	glm::vec2 animationAndKeyframe = player->getAnimationAndKeyframe();
 	if(animationAndKeyframe[0] != EXPLOSION)
 		tileMapDispl += 1;	
@@ -230,12 +377,14 @@ void PlayScene::update(int deltaTime)
 		if (animationAndKeyframe[1] == 4) state = "MENU";
 	}
 	for (int i = 0; i < int(enemyList.size()); ++i)
-		enemyList[i]->update(deltaTime);
-
+		enemyList[i]->update(deltaTime);	
+	for (int i = 0; i < int(flowerList.size()); ++i)
+		flowerList[i]->update(deltaTime);
 	//canviar condicio 
 	if (Game::instance().getKey('m') || Game::instance().getKey('M')) {
 		state = "MENU";
 	}
+	render();
 }
 
 void PlayScene::render()
@@ -254,6 +403,8 @@ void PlayScene::render()
 	bulletManager.render();
 	for (int i = 0; i < enemyList.size(); ++i)
 		enemyList[i]->render();
+	for (int i = 0; i < flowerList.size(); ++i)
+		flowerList[i]->render();
 }
 
 void PlayScene::checkBullets() {
@@ -268,6 +419,38 @@ void PlayScene::checkBullets() {
 			activeBullets.erase(activeBullets.begin() + i);
 			bulletManager.set_actBullets(activeBullets);
 		}
+	}
+}
+void PlayScene::checkEnemiesHits() {
+	for (int j = 0; j < int(enemyList.size() - 1); ++j) {
+	
+
+		bool collisionX = (((enemyList[j]->ret_pos().x + enemyList[j]->ret_size().x + 1.5f) >= player->getPosition().x + tileMapDispl ) &&
+			((player->getPosition().x + 28 + tileMapDispl ) >= enemyList[j]->ret_pos().x));
+		//colision en las Y
+		bool collisionY = (((enemyList[j]->ret_pos().y + enemyList[j]->ret_size().y + 1.5f) >= player->getPosition().y) &&
+			((player->getPosition().y + 16 + 1.5f) >= enemyList[j]->ret_pos().y));
+		if (collisionX && collisionY)
+		{
+			player->update(1);
+			player->hit();
+		}
+
+	}
+	for (int j = 0; j < int(flowerList.size() - 1); ++j) {
+
+
+		bool collisionX = (((flowerList[j]->ret_pos().x + flowerList[j]->ret_size().x + 1.5f) >= player->getPosition().x + tileMapDispl) &&
+			((player->getPosition().x + 28 + tileMapDispl) >= flowerList[j]->ret_pos().x));
+		//colision en las Y
+		bool collisionY = (((flowerList[j]->ret_pos().y + flowerList[j]->ret_size().y + 1.5f) >= player->getPosition().y) &&
+			((player->getPosition().y + 16 + 1.5f) >= flowerList[j]->ret_pos().y));
+		if (collisionX && collisionY)
+		{
+			player->update(1);
+			player->hit();
+		}
+
 	}
 }
 Scene* PlayScene::changeState()

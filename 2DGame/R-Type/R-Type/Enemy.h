@@ -18,7 +18,11 @@ public:
 	void setPosition(const glm::vec2& pos);
 	glm::vec2 ret_pos();
 	glm::vec2 ret_size();
+	int ret_type();
 	void hit();
+	bool ret_direction();
+	void changeDirection();
+
 	int health_remaining();
 	~Enemy();
 
@@ -34,6 +38,9 @@ private:
 	ShaderProgram* aux;
 	int timeToMove;
 	int iterator;
+	bool movingUp;
+	int directionCooldown;
+
 };
 
 #endif
