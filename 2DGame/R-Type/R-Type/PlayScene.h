@@ -9,6 +9,7 @@
 #include "Enemy.h"
 #include "Scene.h"
 #include "MenuScene.h"
+#include "Force.h"
 
 
 // Scene contains all the entities of our game.
@@ -24,11 +25,13 @@ public:
 
 	void init();
 	void update(int deltaTime);
+
 	void initEnemies();
 	void moveEnemies();
 	void stopEnemies();
 	void checkHits();
 	void checkEnemiesHits();
+	void checkCollisionForceUnit();
 	void checkBullets();
 	void render();
 
@@ -40,6 +43,7 @@ private:
 private:
 	TileMap *map;
 	Player *player;
+	Force* force;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
@@ -57,6 +61,14 @@ private:
 	bool movingUp;
 	int flowerIterator;
 	int butterflyShootCooldown;
+
+	Texture backgroundSpritesheet, forceUnitTex;
+	Sprite* background, *forceUnit;
+	BulletManager bulletManager;
+	string state;
+	MenuScene* menu;
+	bool forceHit;
+
 };
 
 

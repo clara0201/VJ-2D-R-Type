@@ -5,7 +5,6 @@
 #include "Game.h"
 #include "Enemy.h"
 
-
 #define SCREEN_X 0
 #define SCREEN_Y 0
 #define FLOWER 0
@@ -22,12 +21,15 @@ enum PlayerAnims
 	STAND_UP, STAND_DOWN, STAND_RIGHT, MOVE_UP, MOVE_DOWN, EXPLOSION
 };
 
+
+
 PlayScene::PlayScene(MenuScene* menuS)
 {
 	map = NULL;
 	player = NULL;	
 	tileMapDispl = 0;
 	menu = menuS;
+	force = NULL;
 }
 
 PlayScene::~PlayScene()
@@ -51,6 +53,7 @@ PlayScene::~PlayScene()
 void PlayScene::init()
 {
 	state = "ON";
+	forceHit = false;
 
 	initShaders();
 	map = TileMap::createTileMap("levels/level01RTYPE.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -66,6 +69,12 @@ void PlayScene::init()
 	player->setTileMap(map);
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
+
+	forceUnitTex.loadFromFile("images/forceUnit.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	forceUnit = Sprite::createSprite(glm::ivec2(9, 9), glm::vec2(1.0f, 1.0f), &forceUnitTex, &texProgram);
+	
+	force = new Force();
+	force->init(texProgram, player);
 }
 void PlayScene::initEnemies() {
 	
@@ -361,6 +370,9 @@ void PlayScene:: moveEnemies() {
 
 		}		
 }
+
+
+
 void PlayScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
@@ -370,6 +382,9 @@ void PlayScene::update(int deltaTime)
 	butterflyShootCooldown--;
 
 	bulletManager.update(deltaTime);
+	forceUnit->update(deltaTime);
+	force->update(deltaTime);
+
 	checkBullets();
 	moveEnemies();
 
@@ -382,16 +397,45 @@ void PlayScene::update(int deltaTime)
 	else {
 		if (animationAndKeyframe[1] == 4) state = "MENU";
 	}
+
 	for (int i = 0; i < int(enemyList.size()); ++i)
 		enemyList[i]->update(deltaTime);	
 	for (int i = 0; i < int(flowerList.size()); ++i)
 		flowerList[i]->update(deltaTime);
 	//canviar condicio 
+
+
+	forceUnit->setPosition(glm::vec2(500 - tileMapDispl, 100));
+	
+	if(!forceHit) checkCollisionForceUnit();
+	else {
+		force->update(deltaTime);
+	}
+
+
 	if (Game::instance().getKey('m') || Game::instance().getKey('M')) {
 		state = "MENU";
 	}
 	render();
 }
+
+void PlayScene::checkCollisionForceUnit() {
+	//check collision with force unit(28, 16 is player size)
+	glm::ivec2 posPlayer = player->getPosition();
+	glm::ivec2 posForceUnit = forceUnit->getPosition();
+
+	bool collisionX = ((posForceUnit.x >= posPlayer.x) &&
+		((posPlayer.x + 28) >= posForceUnit.x));
+
+	bool collisionY = ((posForceUnit.x + 9 >= posPlayer.y) &&
+		(posPlayer.y + 16) >= posForceUnit.y);
+	if (collisionX && collisionY)
+	{
+		forceHit = true;
+		force->enable();
+	}
+}
+
 
 void PlayScene::render()
 {
@@ -407,10 +451,13 @@ void PlayScene::render()
 	map->render();
 	player->render();
 	bulletManager.render();
+
 	for (int i = 0; i < enemyList.size(); ++i)
 		enemyList[i]->render();
 	for (int i = 0; i < flowerList.size(); ++i)
 		flowerList[i]->render();
+	if(!forceHit) forceUnit->render();
+	force->render();
 }
 
 void PlayScene::checkBullets() {

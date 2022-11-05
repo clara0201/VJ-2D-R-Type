@@ -22,7 +22,8 @@ private:
 	float currentTime;
 	string state;
 	MenuScene* menu;
-	Texture blastTex;
-	Sprite* arrow;
+	Texture backgroundTex;
+	Sprite* background;
+	glm::mat4 projection;
 };
 

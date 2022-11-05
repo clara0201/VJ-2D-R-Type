@@ -35,6 +35,7 @@ public:
 	int keyframe() const;
 	
 	void setPosition(const glm::vec2 &pos);
+	glm::vec2 getPosition();
 
 private:
 	Texture *texture;

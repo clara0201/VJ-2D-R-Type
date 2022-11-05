@@ -1,5 +1,6 @@
 #include "CreditsScene.h"
 #include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
 
 CreditsScene::CreditsScene(MenuScene* menuS)
 {
@@ -12,27 +13,39 @@ CreditsScene::~CreditsScene()
 
 void CreditsScene::init()
 {
-	//placeholder
-	glClearColor(0.3f, 0.9f, 0.9f, 1.0f);
-
 	state = "ON";
-
 	currentTime = 0.f;
+
+	backgroundTex.loadFromFile("images/creditsScreen.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	background = Sprite::createSprite(glm::ivec2(512, 256), glm::vec2(1.0f, 1.0f), &backgroundTex, &texProgram);
+	background->setPosition(glm::vec2(0.0f, 0.0f));
+
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
+
 	initShaders();
 }
 
 void CreditsScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
+	background->update(deltaTime);
+
 	//detectar input de l'usuari i canviar variable 'state'
-	if (Game::instance().getKey(32)) {
+	if (Game::instance().getKey('m') || Game::instance().getKey('M')) {
 		state = "MENU";
 	}
 }
 
 void CreditsScene::render()
 {
-	
+	glm::mat4 modelview;
+	texProgram.use();
+	texProgram.setUniformMatrix4f("projection", projection);
+	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::mat4(1.0f);
+	texProgram.setUniformMatrix4f("modelview", modelview);
+
+	background->render();
 }
 
 Scene* CreditsScene::changeState()
@@ -40,6 +53,9 @@ Scene* CreditsScene::changeState()
 	if (state == "MENU") {
 		menu->init();
 		return menu;
+	}
+	else if (state == "ON") {
+		this->init();
 	}
 
 	return this;

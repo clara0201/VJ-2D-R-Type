@@ -2,6 +2,7 @@
 #define _ENEMY_INCLUDE
 
 #include <glm/glm.hpp>
+#include "ShaderProgram.h"
 #include "Sprite.h"
 #include "TileMap.h"
 #include "Player.h"
@@ -40,8 +41,8 @@ private:
 	int iterator;
 	bool movingUp;
 	int directionCooldown;
+  ShaderProgram* shaderProgram;
 
 };
-
 #endif
 #pragma once
