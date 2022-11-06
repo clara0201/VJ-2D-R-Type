@@ -33,6 +33,7 @@ public:
 	void checkEnemiesHits();
 	void checkCollisionForceUnit();
 	void checkBullets();
+	void checkForceHits();
 	void render();
 
 	virtual Scene* changeState();
@@ -65,6 +66,7 @@ private:
 	Texture forceUnitTex;
 	Sprite *forceUnit;
 	bool forceHit;
+	int invCooldown;
 
 };
 

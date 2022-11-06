@@ -24,7 +24,7 @@ public:
 	void setPosition(const glm::vec2 &pos);
 	glm::vec2 getAnimationAndKeyframe();
 	glm::vec2 getPosition();
-	void changeVulnerabilty(bool setInvulnerable);
+
 	bool invulnerable;
 	
 private:

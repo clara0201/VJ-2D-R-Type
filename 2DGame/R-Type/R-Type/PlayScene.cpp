@@ -47,6 +47,7 @@ PlayScene::~PlayScene()
 	butterflyShootCooldown = 50;
 	movingUp = true;
 	flowerIterator = 0;
+	invCooldown = 0;
 }
 
 
@@ -54,6 +55,7 @@ void PlayScene::init()
 {
 	state = "ON";
 	forceHit = false;
+	invCooldown = 0;
 
 	initShaders();
 	map = TileMap::createTileMap("levels/level01RTYPE.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -76,6 +78,7 @@ void PlayScene::init()
 	force = new Force();
 	force->init(texProgram, player);
 }
+
 void PlayScene::initEnemies() {
 	
 	int number_of_enemies = 57; //cuantos enemigos hay en el nivel
@@ -304,6 +307,7 @@ void PlayScene::checkHits() {
 
 		}
 	}
+
 	//vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
 	for (int j = 0; j < int(flowerList.size() - 1); ++j) {
 		for (int i = 0; i < int(activeBullets.size() - 1); ++i) {
@@ -378,8 +382,6 @@ void PlayScene:: moveEnemies() {
 		}		
 }
 
-
-
 void PlayScene::update(int deltaTime)
 {
 	currentTime += deltaTime;
@@ -395,6 +397,7 @@ void PlayScene::update(int deltaTime)
 	checkBullets();
 	moveEnemies();
 
+	if(forceHit)checkForceHits();
 	checkHits();
 	checkEnemiesHits();
 	
@@ -418,6 +421,7 @@ void PlayScene::update(int deltaTime)
 	}
 
 
+	//special keys
 	if (Game::instance().getKey('m') || Game::instance().getKey('M')) state = "MENU";
 
 	if (Game::instance().getKey('f') || Game::instance().getKey('F')) {
@@ -434,15 +438,12 @@ void PlayScene::update(int deltaTime)
 			forceHit = true;
 		}*/
 	}
-	if (Game::instance().getKey('g') || Game::instance().getKey('G')) {
-		if (player->invulnerable) {
-			player->changeVulnerabilty(false);
-		}
-		else {
-			player->changeVulnerabilty(true);
-		}
-	}
 
+	if (Game::instance().getKey('g') || Game::instance().getKey('g') && invCooldown>10) {
+		player->invulnerable = !player->invulnerable;
+		invCooldown = 0;
+	}
+	invCooldown++;
 
 	render();
 }
@@ -505,48 +506,86 @@ void PlayScene::checkBullets() {
 			activeBullets.erase(activeBullets.begin() + i);
 			bulletManager.set_actBullets(activeBullets);
 		}
-		
-		if (false)
+	}
+}
+
+//checks if force hits any enemies or bullets
+void PlayScene::checkForceHits() {
+	glm::vec2 force_pos = glm::vec2(player->getPosition().x + 28, player->getPosition().y);
+
+	for (int j = 0; j < int(enemyList.size()); ++j) 
+	{
+		glm::vec2 enemy_pos = enemyList[j]->ret_pos();
+		glm::vec2 enemy_size = enemyList[j]->ret_size();
+
+		bool collisionX = (((enemy_pos.x + enemy_size.x + 1.5f) >= force_pos.x + tileMapDispl) &&
+			((force_pos.x + 16 + tileMapDispl) >= enemy_pos.x));
+		bool collisionY = (((enemy_pos.y + enemy_size.y + 1.5f) >= force_pos.y) &&
+			((force_pos.y + 16 + 1.5f) >= enemy_pos.y));
+
+		if (collisionX && collisionY) {
+			enemyList[j]->hit();
+			if (enemyList[j]->health_remaining() <= 0) {
+				enemyList[j] = NULL;
+				enemyList.erase(enemyList.begin() + j);
+			}
+		}
+	}
+
+	for (int j = 0; j < int(flowerList.size() - 1); ++j) 
+	{
+		glm::vec2 enemy_pos = flowerList[j]->ret_pos();
+		glm::vec2 enemy_size = flowerList[j]->ret_size();
+
+		bool collisionX = (((enemy_pos.x + enemy_size.x + 1.5f) >= force_pos.x + tileMapDispl) &&
+			((force_pos.x + 16 + tileMapDispl) >= enemy_pos.x));
+		bool collisionY = (((enemy_pos.y + enemy_size.y + 1.5f) >= force_pos.y) &&
+			((force_pos.y + 16 + 1.5f) >= enemy_pos.y));
+
+		if (collisionX && collisionY)
 		{
-			bool collisionX = (((bulletPosition.x + 6 + 1.5f) >= player->getPosition().x + tileMapDispl) &&
-				((player->getPosition().x + 28 + tileMapDispl) >= bulletPosition.x));
-			//colision en las Y
-			bool collisionY = (((bulletPosition.y + 6 + 1.5f) >= player->getPosition().y) &&
-				((player->getPosition().y + 16 + 1.5f) >= bulletPosition.y));
-			if (bulletPosition != glm::vec2(0.0f, 0.0f) && collisionX && collisionY)
-				player->hit();
+			flowerList[j]->hit();
+			if (flowerList[j]->health_remaining() <= 0) {
+				flowerList[j] = NULL;
+				flowerList.erase(flowerList.begin() + j);
+			}
 		}
 	}
 }
 
+
+//check enemies impacting player
 void PlayScene::checkEnemiesHits() {
+	glm::vec2 player_pos = player->getPosition();
+
 	for (int j = 0; j < int(enemyList.size()); ++j) {
+		glm::vec2 enemy_pos = enemyList[j]->ret_pos();
+		glm::vec2 enemy_size = enemyList[j]->ret_size();
 
-		bool collisionX = (((enemyList[j]->ret_pos().x + enemyList[j]->ret_size().x + 1.5f) >= player->getPosition().x + tileMapDispl) &&
-			((player->getPosition().x + 28 + tileMapDispl) >= enemyList[j]->ret_pos().x));
-		bool collisionY = (((enemyList[j]->ret_pos().y + enemyList[j]->ret_size().y + 1.5f) >= player->getPosition().y) &&
-			((player->getPosition().y + 16 + 1.5f) >= enemyList[j]->ret_pos().y));
+		bool collisionX = (((enemy_pos.x + enemy_size.x + 1.5f) >= player_pos.x + tileMapDispl) &&
+			((player_pos.x + 28 + tileMapDispl) >= enemy_pos.x));
+		bool collisionY = (((enemy_pos.y + enemy_size.y + 1.5f) >= player_pos.y) &&
+			((player_pos.y + 16 + 1.5f) >= enemy_pos.y));
+		
 		if (collisionX && collisionY)
 		{
-
-			//player->update(1);
 			player->hit();
 		}
-
 	}
+
 	for (int j = 0; j < int(flowerList.size() - 1); ++j) {
+		glm::vec2 enemy_pos = flowerList[j]->ret_pos();
+		glm::vec2 enemy_size = flowerList[j]->ret_size();
 
-
-		bool collisionX = (((flowerList[j]->ret_pos().x + flowerList[j]->ret_size().x + 1.5f) >= player->getPosition().x + tileMapDispl) &&
-			((player->getPosition().x + 28 + tileMapDispl) >= flowerList[j]->ret_pos().x));
-		bool collisionY = (((flowerList[j]->ret_pos().y + flowerList[j]->ret_size().y + 1.5f) >= player->getPosition().y) &&
-			((player->getPosition().y + 16 + 1.5f) >= flowerList[j]->ret_pos().y));
+		bool collisionX = (((enemy_pos.x + enemy_size.x + 1.5f) >= player_pos.x + tileMapDispl) &&
+			((player_pos.x + 28 + tileMapDispl) >= enemy_pos.x));
+		bool collisionY = (((enemy_pos.y + enemy_size.y + 1.5f) >= player_pos.y) &&
+			((player_pos.y + 16 + 1.5f) >= enemy_pos.y));
+		
 		if (collisionX && collisionY)
 		{
-			//player->update(1);
 			player->hit();
 		}
-
 	}
 }
 

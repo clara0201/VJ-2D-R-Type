@@ -175,10 +175,6 @@ void Player::hit()
 	if(!invulnerable) sprite->changeAnimation(EXPLOSION);	
 }
 
-void Player::changeVulnerabilty(bool setInvulnerable) {
-	invulnerable = setInvulnerable;
-}
-
 
 
 
