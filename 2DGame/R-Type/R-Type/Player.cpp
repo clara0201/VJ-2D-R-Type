@@ -122,7 +122,7 @@ void Player::update(int deltaTime)
 		sprite->changeAnimation(STAND_RIGHT);
 	}
 
-	//cutre pero bueno
+	//check power shot
 	if (!countingShoot && Game::instance().getKey(' ')) {
 		shootingTimer = 0;
 		countingShoot = true;
@@ -131,7 +131,6 @@ void Player::update(int deltaTime)
 		++shootingTimer;
 	}
 	else if (countingShoot && !Game::instance().getKey(' ') && timeBetweenBullets <= 0) {
-		//int lengthShoot = deltaTime - shootingTimer;
 		countingShoot = false;
 		if (shootingTimer >= 10) { //key has been pressed down
 			bM->createPlayerBullet(posPlayer.x, posPlayer.y, 2, *aux);
@@ -142,6 +141,7 @@ void Player::update(int deltaTime)
 			timeBetweenBullets = 10;
 		}
 	}
+	//end check power shot
 	
 	scrollDispl.x += 1;		
 	timeBetweenBullets--;

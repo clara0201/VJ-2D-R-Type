@@ -12,8 +12,9 @@ public:
 	~Bullet();
 	glm::vec2 ret_pos();
 	glm::vec2 ret_size();
+	glm::vec2 initial_pos;
 	bool ret_player_bullet();
-	bool alive;
+	bool alive, isPowerShot;
 
 private:
 	int dev;

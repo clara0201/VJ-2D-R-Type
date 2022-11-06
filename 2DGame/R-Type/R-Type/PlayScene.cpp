@@ -267,11 +267,12 @@ void PlayScene::initEnemies() {
 	}
 }
 
+//check player bullets impacting enemies
 void PlayScene::checkHits() {
 	vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
+
 	for (int j = 0; j < int(enemyList.size()-1); ++j) {
 		for (int i = 0; i < int(activeBullets.size()-1); ++i) {			
-			//colision en las X
 			//glm::ivec2(bulletPosition.x + tileMapDispl + 35.0f, bulletPosition.y)
 			Enemy* enemy = enemyList[j];
  			Bullet* bullet = activeBullets[i];
@@ -280,17 +281,19 @@ void PlayScene::checkHits() {
 			glm::vec2 bulletPos = bullet->ret_pos();
 			glm::vec2 bulletSize = bullet->ret_size();
 
+			//colision en las X
  			bool collisionX = (((enemyList[j]->ret_pos().x + enemyList[j]->ret_size().x+ 1.5f) >= activeBullets[i]->ret_pos().x + tileMapDispl+ 38.0f) &&
 				((activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x+ tileMapDispl+ 38.0f) >= enemyList[j]->ret_pos().x));
 			//colision en las Y
-			bool collisionY = (((enemyList[j]->ret_pos().y + enemyList[j]->ret_size().y+ 1.5f) >= activeBullets[i]->ret_pos().y) &&
- 				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y + 1.5f) >= enemyList[j]->ret_pos().y));
+			bool collisionY = (((enemyList[j]->ret_pos().y + enemyList[j]->ret_size().y+ 3.f) >= activeBullets[i]->ret_pos().y) &&
+ 				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y + 3.f) >= enemyList[j]->ret_pos().y));
 
 			if (collisionX && collisionY) {	
-
- 				activeBullets[i]->~Bullet();
-				activeBullets.erase(activeBullets.begin() + i);
-				bulletManager.set_actBullets(activeBullets);
+				if (!activeBullets[i]->isPowerShot) {
+					activeBullets[i]->~Bullet();
+					activeBullets.erase(activeBullets.begin() + i);
+					bulletManager.set_actBullets(activeBullets);
+				}
 				enemyList[j]->hit();					
  				if (enemyList[j]->health_remaining() <= 0) {						 						
   					enemyList[j] = NULL;
@@ -304,7 +307,6 @@ void PlayScene::checkHits() {
 	//vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
 	for (int j = 0; j < int(flowerList.size() - 1); ++j) {
 		for (int i = 0; i < int(activeBullets.size() - 1); ++i) {
-			//colision en las X
 			//glm::ivec2(bulletPosition.x + tileMapDispl + 35.0f, bulletPosition.y)
 			Enemy* enemy = flowerList[j];
 			Bullet* bullet = activeBullets[i];
@@ -313,16 +315,19 @@ void PlayScene::checkHits() {
 			glm::vec2 bulletPos = bullet->ret_pos();
 			glm::vec2 bulletSize = bullet->ret_size();
 
+			//colision en las X
 			bool collisionX = (((flowerList[j]->ret_pos().x + flowerList[j]->ret_size().x + 1.5f) >= activeBullets[i]->ret_pos().x + tileMapDispl + 38.0f) &&
 				((activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x + tileMapDispl + 38.0f) >= flowerList[j]->ret_pos().x));
 			//colision en las Y
 			bool collisionY = (((flowerList[j]->ret_pos().y + flowerList[j]->ret_size().y + 1.5f) >= activeBullets[i]->ret_pos().y) &&
 				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y + 1.5f) >= flowerList[j]->ret_pos().y));
 
-			if (collisionX && collisionY) {				
-				activeBullets[i]->~Bullet();
-				activeBullets.erase(activeBullets.begin() + i);
-				bulletManager.set_actBullets(activeBullets);
+			if (collisionX && collisionY) {	
+				if (!activeBullets[i]->isPowerShot) {
+					activeBullets[i]->~Bullet();
+					activeBullets.erase(activeBullets.begin() + i);
+					bulletManager.set_actBullets(activeBullets);
+				}
 				flowerList[j]->hit();
 				if (flowerList[j]->health_remaining() <= 0) {
 					flowerList[j] = NULL;
@@ -485,8 +490,17 @@ void PlayScene::render()
 void PlayScene::checkBullets() {
 	vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
 	for (int i = 0; i < int(activeBullets.size()); ++i) {
-		glm::vec2 bulletPosition = activeBullets[i]->ret_pos();
+		Bullet* b = activeBullets[i];
+
+		glm::vec2 bulletPosition = b->ret_pos();
 		if (bulletPosition != glm::vec2(0.0f, 0.0f) && map->collisionMoveRight(glm::ivec2(bulletPosition.x+tileMapDispl+35.0f, bulletPosition.y), glm::ivec2(8, 8))) {
+			b->~Bullet();
+			activeBullets.erase(activeBullets.begin() + i);
+			bulletManager.set_actBullets(activeBullets);
+		}
+
+		//erase power shots once they've gone too far
+		if (b->isPowerShot && (b->ret_pos().x - b->initial_pos.x > 200)) {
 			activeBullets[i]->~Bullet();
 			activeBullets.erase(activeBullets.begin() + i);
 			bulletManager.set_actBullets(activeBullets);

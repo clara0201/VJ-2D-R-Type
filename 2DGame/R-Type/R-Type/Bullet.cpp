@@ -25,6 +25,7 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 	desvY = desviationY;
 	desvX = desviationX;
 	if (typeOfBullet == PLAYER_NORMAL) {
+		isPowerShot = false;
 		size.x = 16;
 		size.y = 8;
 
@@ -41,8 +42,10 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 
 		sprite->changeAnimation(0);
 		sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
+		initial_pos = glm::vec2(float(posBullet.x), float(posBullet.y));
 	}
 	else if (typeOfBullet == PLAYER_POWER) {
+		isPowerShot = true;
 		size.x = 28;
 		size.y = 8;
 
@@ -50,6 +53,8 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 		sprite = Sprite::createSprite(glm::ivec2(28, 8), glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
 
 		sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
+		initial_pos = glm::vec2(float(posBullet.x), float(posBullet.y));
+
 	}
 	else if (typeOfBullet == BUTTERFLY) {
 		size.x = 6;
@@ -59,6 +64,7 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 		sprite = Sprite::createSprite(glm::ivec2(6, 6), glm::vec2(1.0f, 1.0f), &spritesheet, &shaderProgram);
 
 		sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
+		initial_pos = glm::vec2(float(posBullet.x), float(posBullet.y));
 	}
 	speed = speedy;
 	typeOf = typeOfBullet;
