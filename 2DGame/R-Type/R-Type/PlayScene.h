@@ -62,11 +62,8 @@ private:
 	int flowerIterator;
 	int butterflyShootCooldown;
 
-	Texture backgroundSpritesheet, forceUnitTex;
-	Sprite* background, *forceUnit;
-	BulletManager bulletManager;
-	string state;
-	MenuScene* menu;
+	Texture forceUnitTex;
+	Sprite *forceUnit;
 	bool forceHit;
 
 };

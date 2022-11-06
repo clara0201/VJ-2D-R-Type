@@ -12,6 +12,7 @@ public:
 	void checkCollision();
 	void attachPlayer();
 	void enable();
+	void disable();
 
 private:
 	bool attached, enabled;

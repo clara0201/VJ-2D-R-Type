@@ -266,6 +266,7 @@ void PlayScene::initEnemies() {
 		else enemyList.push_back(enemy_aux);
 	}
 }
+
 void PlayScene::checkHits() {
 	vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
 	for (int j = 0; j < int(enemyList.size()-1); ++j) {
@@ -333,6 +334,7 @@ void PlayScene::checkHits() {
 		}
 	}
 }
+
 void PlayScene:: moveEnemies() {
 	
 	if (cooldown <= 0) {
@@ -389,7 +391,7 @@ void PlayScene::update(int deltaTime)
 	moveEnemies();
 
 	checkHits();
-	//checkEnemiesHits();
+	checkEnemiesHits();
 	
 	glm::vec2 animationAndKeyframe = player->getAnimationAndKeyframe();
 	if(animationAndKeyframe[0] != EXPLOSION)
@@ -402,8 +404,6 @@ void PlayScene::update(int deltaTime)
 		enemyList[i]->update(deltaTime);	
 	for (int i = 0; i < int(flowerList.size()); ++i)
 		flowerList[i]->update(deltaTime);
-	//canviar condicio 
-
 
 	forceUnit->setPosition(glm::vec2(500 - tileMapDispl, 100));
 	
@@ -413,9 +413,32 @@ void PlayScene::update(int deltaTime)
 	}
 
 
-	if (Game::instance().getKey('m') || Game::instance().getKey('M')) {
-		state = "MENU";
+	if (Game::instance().getKey('m') || Game::instance().getKey('M')) state = "MENU";
+
+	if (Game::instance().getKey('f') || Game::instance().getKey('F')) {
+		force->enable();
+		forceHit = true;
+
+		//per desactivar:
+		/*if (forceHit) {
+			force->disable();
+			forceHit = false;
+		}
+		else {
+			force->enable();
+			forceHit = true;
+		}*/
 	}
+	if (Game::instance().getKey('g') || Game::instance().getKey('G')) {
+		if (player->invulnerable) {
+			player->changeVulnerabilty(false);
+		}
+		else {
+			player->changeVulnerabilty(true);
+		}
+	}
+
+
 	render();
 }
 
@@ -435,7 +458,6 @@ void PlayScene::checkCollisionForceUnit() {
 		force->enable();
 	}
 }
-
 
 void PlayScene::render()
 {
@@ -482,18 +504,18 @@ void PlayScene::checkBullets() {
 		}
 	}
 }
-void PlayScene::checkEnemiesHits() {
-	for (int j = 0; j < int(enemyList.size() - 1); ++j) {
-	
 
-		bool collisionX = (((enemyList[j]->ret_pos().x + enemyList[j]->ret_size().x + 1.5f) >= player->getPosition().x + tileMapDispl ) &&
-			((player->getPosition().x + 28 + tileMapDispl ) >= enemyList[j]->ret_pos().x));
-		//colision en las Y
+void PlayScene::checkEnemiesHits() {
+	for (int j = 0; j < int(enemyList.size()); ++j) {
+
+		bool collisionX = (((enemyList[j]->ret_pos().x + enemyList[j]->ret_size().x + 1.5f) >= player->getPosition().x + tileMapDispl) &&
+			((player->getPosition().x + 28 + tileMapDispl) >= enemyList[j]->ret_pos().x));
 		bool collisionY = (((enemyList[j]->ret_pos().y + enemyList[j]->ret_size().y + 1.5f) >= player->getPosition().y) &&
 			((player->getPosition().y + 16 + 1.5f) >= enemyList[j]->ret_pos().y));
 		if (collisionX && collisionY)
 		{
-			player->update(1);
+
+			//player->update(1);
 			player->hit();
 		}
 
@@ -503,17 +525,17 @@ void PlayScene::checkEnemiesHits() {
 
 		bool collisionX = (((flowerList[j]->ret_pos().x + flowerList[j]->ret_size().x + 1.5f) >= player->getPosition().x + tileMapDispl) &&
 			((player->getPosition().x + 28 + tileMapDispl) >= flowerList[j]->ret_pos().x));
-		//colision en las Y
 		bool collisionY = (((flowerList[j]->ret_pos().y + flowerList[j]->ret_size().y + 1.5f) >= player->getPosition().y) &&
 			((player->getPosition().y + 16 + 1.5f) >= flowerList[j]->ret_pos().y));
 		if (collisionX && collisionY)
 		{
-			player->update(1);
+			//player->update(1);
 			player->hit();
 		}
 
 	}
 }
+
 Scene* PlayScene::changeState()
 {
 	if (state == "MENU") {

@@ -79,7 +79,7 @@ void Enemy::update(int deltaTime)
 			movingUp = !movingUp;
 		directionCooldown = 20;
 	}
-	scrollDispl += 0;
+	scrollDispl += 1;
 	if (timeToMove <= 0) {
 		if(typeofEnemy != BOSS)posEnemy.x = posEnemy.x- 5.f;
 		iterator++;

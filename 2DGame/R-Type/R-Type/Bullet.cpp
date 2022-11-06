@@ -15,7 +15,7 @@ enum anim
 };
 enum bulletTypes
 {
-	PLAYER, BUTTERFLY
+	PLAYER_NORMAL, BUTTERFLY, PLAYER_POWER
 };
 
 
@@ -24,7 +24,7 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 	isPlayer = player;	
 	desvY = desviationY;
 	desvX = desviationX;
-	if (typeOfBullet == PLAYER) {
+	if (typeOfBullet == PLAYER_NORMAL) {
 		size.x = 16;
 		size.y = 8;
 
@@ -40,6 +40,15 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 		sprite->addKeyframe(HITWALL, glm::vec2(0.5f, 0.0f));
 
 		sprite->changeAnimation(0);
+		sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
+	}
+	else if (typeOfBullet == PLAYER_POWER) {
+		size.x = 28;
+		size.y = 8;
+
+		spritesheet.loadFromFile("images/blast.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(glm::ivec2(28, 8), glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
+
 		sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
 	}
 	else if (typeOfBullet == BUTTERFLY) {
@@ -105,7 +114,7 @@ void Bullet::setTileMap(TileMap* tileMap)
 }
 
 void Bullet::render() {
-	if(typeOf == PLAYER)sprite->setPosition(glm::vec2(float(posBullet.x + 25), float(posBullet.y + 5)));
+	if(typeOf == PLAYER_NORMAL || typeOf == PLAYER_POWER)sprite->setPosition(glm::vec2(float(posBullet.x + 25), float(posBullet.y + 5)));
 	else sprite->setPosition(glm::vec2(float(posBullet.x + 25), float(posBullet.y + 5)));
 	sprite->render();
 }

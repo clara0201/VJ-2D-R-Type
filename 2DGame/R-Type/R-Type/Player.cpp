@@ -24,7 +24,10 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Bu
 {
 	aux = &shaderProgram;
 	bJumping = false;
+	countingShoot = false;
+	invulnerable = false;
 	timeBetweenBullets = 0;
+	shootingTimer = 0;
 	spritesheet.loadFromFile("images/naveMasExplosion.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(28, 16), glm::vec2(0.1, 1), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(6);
@@ -119,10 +122,25 @@ void Player::update(int deltaTime)
 		sprite->changeAnimation(STAND_RIGHT);
 	}
 
-	if (Game::instance().getKey(' ') && timeBetweenBullets <= 0)
-	{
-		bM->createPlayerBullet(posPlayer.x, posPlayer.y, *aux);
-		timeBetweenBullets = 10;
+	//cutre pero bueno
+	if (!countingShoot && Game::instance().getKey(' ')) {
+		shootingTimer = 0;
+		countingShoot = true;
+	}
+	else if (countingShoot && Game::instance().getKey(' ')) {
+		++shootingTimer;
+	}
+	else if (countingShoot && !Game::instance().getKey(' ') && timeBetweenBullets <= 0) {
+		//int lengthShoot = deltaTime - shootingTimer;
+		countingShoot = false;
+		if (shootingTimer >= 10) { //key has been pressed down
+			bM->createPlayerBullet(posPlayer.x, posPlayer.y, 2, *aux);
+			timeBetweenBullets = 10;
+		}
+		else {
+			bM->createPlayerBullet(posPlayer.x, posPlayer.y, 0, *aux);
+			timeBetweenBullets = 10;
+		}
 	}
 	
 	scrollDispl.x += 1;		
@@ -154,8 +172,11 @@ void Player::setPosition(const glm::vec2 &pos)
 }
 void Player::hit()
 {
-	sprite->changeAnimation(EXPLOSION);	
+	if(!invulnerable) sprite->changeAnimation(EXPLOSION);	
+}
 
+void Player::changeVulnerabilty(bool setInvulnerable) {
+	invulnerable = setInvulnerable;
 }
 
 
