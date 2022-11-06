@@ -16,6 +16,7 @@ void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Play
 	typeofEnemy = typeOf;
 	movingUp = rand() % 2 == 0;
 	directionCooldown = 20;
+	isKilled = false;
 	if (typeOf == FLOWER) {
 		health = 1;
 		size.x = 20;
@@ -55,13 +56,13 @@ void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Play
 	aux = &shaderProgram;
 	scrollDispl = tileMapPos.x;
 	
-
-
 	//sprite->addKeyframe(0, glm::vec2(0.0f, 0.0f));
-	
 	sprite->setPosition(glm::vec2(float(posEnemy.x - scrollDispl), float(posEnemy.y)));	
 	player = target;
 	bM = bulletManager;	
+
+	blastTex.loadFromFile("images/enemyExplosion.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	blast = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(1.0f, 1.0f), &blastTex, &shaderProgram);
 }
 
 
@@ -89,13 +90,15 @@ void Enemy::update(int deltaTime)
 		sprite->update(deltaTime);
 		sprite->setPosition(glm::vec2(float(posEnemy.x - scrollDispl), float(posEnemy.y)));
 	}
+	blast->setPosition(posEnemy);
 }
 
 
 
 void Enemy::render()
 {
-	sprite->render();
+	if (!isKilled) sprite->render();
+	else blast->render();
 }
 
 void Enemy::setTileMap(TileMap* tileMap)
@@ -129,10 +132,10 @@ void Enemy::hit() {
 		--health;
 		if (health == 0) {
 			sprite = NULL;
+			isKilled = true;
 		}
 	}
 }
-
 
 int Enemy::health_remaining() {
 	if (this != NULL)
@@ -153,4 +156,8 @@ void Enemy::changeDirection() {
 	if (this != NULL)
 		movingUp = !movingUp;
 	return ;
+}
+
+void Enemy::showExplosion() {
+	isKilled = true;
 }

@@ -63,8 +63,8 @@ private:
 	int flowerIterator;
 	int butterflyShootCooldown;
 
-	Texture forceUnitTex;
-	Sprite *forceUnit;
+	Texture forceUnitTex, blastTex;
+	Sprite *forceUnit, *blast;
 	bool forceHit;
 	int invCooldown;
 

@@ -26,6 +26,7 @@ public:
 	glm::vec2 getPosition();
 
 	bool invulnerable;
+	int num_lives;
 	
 private:
 	bool bJumping, countingShoot;

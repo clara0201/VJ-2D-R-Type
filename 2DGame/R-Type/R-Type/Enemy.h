@@ -23,8 +23,10 @@ public:
 	void hit();
 	bool ret_direction();
 	void changeDirection();
+	void showExplosion();
 
 	int health_remaining();
+
 	~Enemy();
 
 private:
@@ -33,15 +35,16 @@ private:
 	glm::vec2 posEnemy, size;
 	float scrollDispl;
 	Player* player;
-	Texture spritesheet;
-	Sprite* sprite;
+	Texture spritesheet, blastTex;
+	Sprite* sprite, *blast;
 	TileMap* map;
 	ShaderProgram* aux;
 	int timeToMove;
 	int iterator;
 	bool movingUp;
 	int directionCooldown;
-  ShaderProgram* shaderProgram;
+	ShaderProgram* shaderProgram;
+	bool isKilled;
 
 };
 #endif

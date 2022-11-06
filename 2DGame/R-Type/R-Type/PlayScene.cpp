@@ -77,11 +77,14 @@ void PlayScene::init()
 	
 	force = new Force();
 	force->init(texProgram, player);
+
+	
 }
 
 void PlayScene::initEnemies() {
 	
-	int number_of_enemies = 57; //cuantos enemigos hay en el nivel
+	int number_of_enemies = 100; //cuantos enemigos hay en el nivel
+
 	for (int i = 0; i < number_of_enemies; ++i) {
 		float enemy_x;
 		int enemy_y;
@@ -102,6 +105,7 @@ void PlayScene::initEnemies() {
 		case 5:
 			enemy_x = 18.f; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
+		//
 		case 6:
 			enemy_x = 24.f; enemy_y = 4; typeofEnemy = FLOWER; 
 			break;
@@ -117,6 +121,7 @@ void PlayScene::initEnemies() {
 		case 10:
 			enemy_x = 26.f; enemy_y = 4; typeofEnemy = FLOWER; 
 			break;
+		//
 		case 11:
 			enemy_x = 40.f; enemy_y = 8; typeofEnemy = FLOWER;
 			break;
@@ -132,66 +137,69 @@ void PlayScene::initEnemies() {
 		case 15:
 			enemy_x = 42.f; enemy_y = 8; typeofEnemy = FLOWER;
 			break;
+		//
 		case 16:
-			enemy_x = 30.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 50.f; enemy_y = 2; typeofEnemy = BUTTERFLY;
 			break;
 		case 17:
-			enemy_x = 31.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 51.f; enemy_y = 2; typeofEnemy = BUTTERFLY;
 			break;
 		case 18:
-			enemy_x = 32.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 52.f; enemy_y = 2; typeofEnemy = BUTTERFLY;
 			break;
 		case 19:
-			enemy_x = 33.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 53.f; enemy_y = 2; typeofEnemy = BUTTERFLY;
 			break;
 		case 20:
-			enemy_x = 34.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 54.f; enemy_y = 2; typeofEnemy = BUTTERFLY;
 			break;
 		case 21:
-			enemy_x = 38.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 58.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 22:
-			enemy_x = 39.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 59.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 23:
-			enemy_x = 40.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 50.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 24:
-			enemy_x = 41.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 51.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 25:
-			enemy_x = 42.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 52.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 26:
-			enemy_x = 18.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 58.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 27:
-			enemy_x = 19.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 59.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
+		//
 		case 28:
-			enemy_x = 20.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 110.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 29:
-			enemy_x = 21.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 111.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 30:
-			enemy_x = 22.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 112.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 31:
-			enemy_x = 43.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 113.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 32:
-			enemy_x = 44.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 114.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 33:
-			enemy_x = 45.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 115.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 34:
-			enemy_x = 46.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 116.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 35:
-			enemy_x = 47.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 117.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
+		//
 		case 36:
 			enemy_x = 50.5f; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
@@ -258,8 +266,198 @@ void PlayScene::initEnemies() {
 		case 57:
 			enemy_x = 190.f; enemy_y = 6; typeofEnemy = BOSS;
 			break;
-	
+		//original above
+		case 58:
+			enemy_x = 125.f-50; enemy_y = 4; typeofEnemy = FLOWER;
+			break;
+		case 59:
+			enemy_x = 125.5f - 50; enemy_y = 4; typeofEnemy = FLOWER;
+			break;
+		case 60:
+			enemy_x = 126.f - 50; enemy_y = 4; typeofEnemy = FLOWER;
+			break;
+		case 61:
+			enemy_x = 140.f - 50; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 62:
+			enemy_x = 140.5f - 50; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 63:
+			enemy_x = 141.f - 50; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 64:
+			enemy_x = 141.5f - 50; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 65:
+			enemy_x = 142.f - 50; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 66:
+			enemy_x = 130.f - 20; enemy_y = 3; typeofEnemy = BUTTERFLY;
+			break;
+		case 67:
+			enemy_x = 131.f - 20; enemy_y = 3; typeofEnemy = BUTTERFLY;
+			break;
+		case 68:
+			enemy_x = 132.f - 20; enemy_y = 3; typeofEnemy = BUTTERFLY;
+			break;
+		case 69:
+			enemy_x = 133.f - 20; enemy_y = 3; typeofEnemy = BUTTERFLY;
+			break;
+		case 70:
+			enemy_x = 134.f - 20; enemy_y = 3; typeofEnemy = BUTTERFLY;
+			break;
+		case 71:
+			enemy_x = 138.f - 20; enemy_y = 3; typeofEnemy = BUTTERFLY;
+			break;
+		case 72:
+			enemy_x = 139.f - 20; enemy_y = 3; typeofEnemy = BUTTERFLY;
+			break;
+		case 73:
+			enemy_x = 140.f - 20; enemy_y = 3; typeofEnemy = BUTTERFLY;
+			break;
+		case 74:
+			enemy_x = 141.f - 20; enemy_y = 3; typeofEnemy = BUTTERFLY;
+			break;
+		case 75:
+			enemy_x = 142.f - 20; enemy_y = 3; typeofEnemy = BUTTERFLY;
+			break;
+		case 76:
+			enemy_x = 118.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 77:
+			enemy_x = 119.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 78:
+			enemy_x = 120.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 79:
+			enemy_x = 121.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 80:
+			enemy_x = 122.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 81:
+			enemy_x = 143.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 82:
+			enemy_x = 144.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 83:
+			enemy_x = 145.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 84:
+			enemy_x = 146.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 85:
+			enemy_x = 147.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 86:
+			enemy_x = 150.5f; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 87:
+			enemy_x = 150.5f; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 88:
+			enemy_x = 151.f; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 89:
+			enemy_x = 151.5f; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 90:
+			enemy_x = 152.f; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 91:
+			enemy_x = 164.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 92:
+			enemy_x = 165.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 93:
+			enemy_x = 167.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 94:
+			enemy_x = 168.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 95:
+			enemy_x = 160.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 96:
+			enemy_x = 161.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 97:
+			enemy_x = 162.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 98:
+			enemy_x = 163.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 99:
+			enemy_x = 167.f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 100:
+			enemy_x = 167.5f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 101:
+			enemy_x = 143.f + 40; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 102:
+			enemy_x = 144.f + 40; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 103:
+			enemy_x = 145.f + 40; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 104:
+			enemy_x = 146.f + 40; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 105:
+			enemy_x = 147.f + 40; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 106:
+			enemy_x = 150.5f + 40; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 107:
+			enemy_x = 150.5f + 40; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 108:
+			enemy_x = 151.f + 40; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 109:
+			enemy_x = 151.5f + 40; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 110:
+			enemy_x = 152.f + 40; enemy_y = 6; typeofEnemy = FLOWER;
+			break;
+		case 111:
+			enemy_x = 164.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 112:
+			enemy_x = 165.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 113:
+			enemy_x = 167.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 114:
+			enemy_x = 168.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 115:
+			enemy_x = 160.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 116:
+			enemy_x = 161.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 117:
+			enemy_x = 162.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 118:
+			enemy_x = 163.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 119:
+			enemy_x = 167.f + 25; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
+		case 120:
+			enemy_x = 500.f; enemy_y = 8; typeofEnemy = FLOWER;
+			break;
 		}
+
 		Enemy* enemy_aux;
 		enemy_aux = new Enemy();
 		enemy_aux->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, player, typeofEnemy, &bulletManager);
@@ -298,17 +496,18 @@ void PlayScene::checkHits() {
 					bulletManager.set_actBullets(activeBullets);
 				}
 				enemyList[j]->hit();					
- 				if (enemyList[j]->health_remaining() <= 0) {						 						
+ 				if (enemyList[j]->health_remaining() <= 0) {
+					Sprite* enemyBlast = blast;
+					enemyBlast->setPosition(enemyList[j]->ret_pos());
+					enemyBlast->render();
   					enemyList[j] = NULL;
   					enemyList.erase(enemyList.begin() + j);
-
 				}
 			}
 
 		}
 	}
 
-	//vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
 	for (int j = 0; j < int(flowerList.size() - 1); ++j) {
 		for (int i = 0; i < int(activeBullets.size() - 1); ++i) {
 			//glm::ivec2(bulletPosition.x + tileMapDispl + 35.0f, bulletPosition.y)
@@ -394,6 +593,7 @@ void PlayScene::update(int deltaTime)
 	forceUnit->update(deltaTime);
 	force->update(deltaTime);
 
+
 	checkBullets();
 	moveEnemies();
 
@@ -402,12 +602,7 @@ void PlayScene::update(int deltaTime)
 	checkEnemiesHits();
 	
 	glm::vec2 animationAndKeyframe = player->getAnimationAndKeyframe();
-	if(animationAndKeyframe[0] != EXPLOSION)
-		tileMapDispl += 1;	
-	else {
-		if (animationAndKeyframe[1] == 4) state = "MENU";
-	}
-
+	
 	for (int i = 0; i < int(enemyList.size()); ++i)
 		enemyList[i]->update(deltaTime);	
 	for (int i = 0; i < int(flowerList.size()); ++i)
@@ -445,11 +640,17 @@ void PlayScene::update(int deltaTime)
 	}
 	invCooldown++;
 
+	if (animationAndKeyframe[0] != EXPLOSION)
+		tileMapDispl += 1;
+	else if (animationAndKeyframe[1] == 4) state = "MENU";
+	//else if (animationAndKeyframe[1] == 4 && player->num_lives > 0) state = "RETRY";
+
+
 	render();
 }
 
+//check collision with force unit(28, 16 is player size)
 void PlayScene::checkCollisionForceUnit() {
-	//check collision with force unit(28, 16 is player size)
 	glm::ivec2 posPlayer = player->getPosition();
 	glm::ivec2 posForceUnit = forceUnit->getPosition();
 
@@ -479,6 +680,7 @@ void PlayScene::render()
 	map->render();
 	player->render();
 	bulletManager.render();
+	//test->render();
 
 	for (int i = 0; i < enemyList.size(); ++i)
 		enemyList[i]->render();
@@ -506,6 +708,18 @@ void PlayScene::checkBullets() {
 			activeBullets.erase(activeBullets.begin() + i);
 			bulletManager.set_actBullets(activeBullets);
 		}
+
+		//intento de checkear si les bullets dels enemics colisionen amb el player
+		glm::vec2 bullet_pos = b->ret_pos();
+		glm::vec2 bullet_size = b->ret_size();
+		glm::vec2 player_pos = player->getPosition();
+
+		bool collisionX = (((player_pos.x + 28) >= bullet_pos.x + tileMapDispl + 38.0f) &&
+			((bullet_pos.x + bullet_size.x + tileMapDispl + 38.0f) >= player_pos.x));
+		bool collisionY = (((bullet_pos.y + 6 + 1.5f) >= player_pos.y) &&
+			((player_pos.y + 16 + 1.5f) >= bullet_pos.y));
+
+		if (collisionX && collisionY) player->hit();
 	}
 }
 
@@ -551,6 +765,8 @@ void PlayScene::checkForceHits() {
 			}
 		}
 	}
+
+
 }
 
 
@@ -592,9 +808,12 @@ void PlayScene::checkEnemiesHits() {
 Scene* PlayScene::changeState()
 {
 	if (state == "MENU") {
-		
 		menu->init();
 		return menu;
+	}
+	if (state == "RETRY") {
+		this->init();
+		return this;
 	}
 		
 	return this;

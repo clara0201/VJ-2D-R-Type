@@ -28,6 +28,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Bu
 	invulnerable = false;
 	timeBetweenBullets = 0;
 	shootingTimer = 0;
+	num_lives = 3;
 	spritesheet.loadFromFile("images/naveMasExplosion.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(28, 16), glm::vec2(0.1, 1), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(6);
@@ -172,7 +173,10 @@ void Player::setPosition(const glm::vec2 &pos)
 }
 void Player::hit()
 {
-	if(!invulnerable) sprite->changeAnimation(EXPLOSION);	
+	if (!invulnerable) {
+		sprite->changeAnimation(EXPLOSION);
+		//if (num_lives > 0) num_lives--;
+	}
 }
 
 
