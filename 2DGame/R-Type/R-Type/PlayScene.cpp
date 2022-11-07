@@ -83,7 +83,7 @@ void PlayScene::init()
 
 void PlayScene::initEnemies() {
 	
-	int number_of_enemies = 130; //cuantos enemigos hay en el nivel
+	int number_of_enemies = 135; //cuantos enemigos hay en el nivel
 
 	for (int i = 0; i < number_of_enemies; ++i) {
 		float enemy_x;
@@ -105,23 +105,23 @@ void PlayScene::initEnemies() {
 		case 5:
 			enemy_x = 18.f; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
-		//
+			//
 		case 6:
-			enemy_x = 24.f; enemy_y = 4; typeofEnemy = FLOWER; 
+			enemy_x = 24.f; enemy_y = 4; typeofEnemy = FLOWER;
 			break;
 		case 7:
-			enemy_x = 24.5f; enemy_y = 4; typeofEnemy = FLOWER; 
+			enemy_x = 24.5f; enemy_y = 4; typeofEnemy = FLOWER;
 			break;
 		case 8:
-			enemy_x = 25.f; enemy_y = 4; typeofEnemy = FLOWER; 
+			enemy_x = 25.f; enemy_y = 4; typeofEnemy = FLOWER;
 			break;
 		case 9:
-			enemy_x = 25.5f; enemy_y = 4; typeofEnemy = FLOWER; 
+			enemy_x = 25.5f; enemy_y = 4; typeofEnemy = FLOWER;
 			break;
 		case 10:
-			enemy_x = 26.f; enemy_y = 4; typeofEnemy = FLOWER; 
+			enemy_x = 26.f; enemy_y = 4; typeofEnemy = FLOWER;
 			break;
-		//
+			//
 		case 11:
 			enemy_x = 40.f; enemy_y = 8; typeofEnemy = FLOWER;
 			break;
@@ -137,7 +137,7 @@ void PlayScene::initEnemies() {
 		case 15:
 			enemy_x = 42.f; enemy_y = 8; typeofEnemy = FLOWER;
 			break;
-		//
+			//
 		case 16:
 			enemy_x = 50.f; enemy_y = 2; typeofEnemy = BUTTERFLY;
 			break;
@@ -174,7 +174,7 @@ void PlayScene::initEnemies() {
 		case 27:
 			enemy_x = 59.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
-		//
+			//
 		case 28:
 			enemy_x = 110.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
@@ -199,7 +199,7 @@ void PlayScene::initEnemies() {
 		case 35:
 			enemy_x = 117.f; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
-		//
+			//
 		case 36:
 			enemy_x = 50.5f; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
@@ -266,9 +266,9 @@ void PlayScene::initEnemies() {
 		case 57:
 			enemy_x = 190.f; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
-		//original above
+			//original above
 		case 58:
-			enemy_x = 125.f-50; enemy_y = 4; typeofEnemy = FLOWER;
+			enemy_x = 125.f - 50; enemy_y = 4; typeofEnemy = FLOWER;
 			break;
 		case 59:
 			enemy_x = 125.5f - 50; enemy_y = 4; typeofEnemy = FLOWER;
@@ -454,35 +454,51 @@ void PlayScene::initEnemies() {
 			enemy_x = 180.f; enemy_y = 8; typeofEnemy = BUTTERFLY;
 			break;
 		case 120:
+			enemy_x = 181.f; enemy_y = 8; typeofEnemy = BUTTERFLY;
+			break;
 		case 121:
-			enemy_x = 500.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 200.f; enemy_y = 6; typeofEnemy = BUTTERFLY;
 			break;
 		case 122:
-			enemy_x = 502.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 202.f; enemy_y = 6; typeofEnemy = BUTTERFLY;
 			break;
 		case 123:
-			enemy_x = 504.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 204.f; enemy_y = 6; typeofEnemy = BUTTERFLY;
 			break;
 		case 124:
-			enemy_x = 506.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 206.f; enemy_y = 6; typeofEnemy = BUTTERFLY;
 			break;
 		case 125:
-			enemy_x = 508.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 208.f; enemy_y = 6; typeofEnemy = BUTTERFLY;
 			break;
 		case 126:
-			enemy_x = 510.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 210.f; enemy_y = 6; typeofEnemy = BUTTERFLY;
 			break;
 		case 127:
-			enemy_x = 512.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 212.f; enemy_y = 6; typeofEnemy = BUTTERFLY;
 			break;
 		case 128:
-			enemy_x = 514.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			enemy_x = 214.f; enemy_y = 6; typeofEnemy = BUTTERFLY;
 			break;
 		case 129:
-			enemy_x = 516.f + 25; enemy_y = 8; typeofEnemy = BUTTERFLY;
+			enemy_x = 216.f; enemy_y = 6; typeofEnemy = BUTTERFLY;
 			break;
-
 		case 130:
+			enemy_x = 222.f; enemy_y = 4; typeofEnemy = FLOWER;
+			break;
+		case 131:
+			enemy_x = 223.f; enemy_y = 4; typeofEnemy = FLOWER;
+			break;
+		case 132:
+			enemy_x = 224.f; enemy_y = 4; typeofEnemy = FLOWER;
+			break;
+		case 133:
+			enemy_x = 225.f; enemy_y = 4; typeofEnemy = FLOWER;
+			break;
+		case 134:
+			enemy_x = 126.f; enemy_y = 4; typeofEnemy = FLOWER;
+			break;
+		case 135:
 			enemy_x = 190.f; enemy_y = 6; typeofEnemy = BOSS;
 			break;
 		}
@@ -628,7 +644,7 @@ void PlayScene::update(int deltaTime)
 
 
 	checkBullets();
-	//moveEnemies();
+	moveEnemies();
 
 	if(forceHit)checkForceHits();
 	checkHits();
