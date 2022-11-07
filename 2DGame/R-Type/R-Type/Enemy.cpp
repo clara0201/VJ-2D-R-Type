@@ -68,7 +68,6 @@ void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Play
 
 void Enemy::update(int deltaTime)
 {
-
 	timeToMove--;
 	directionCooldown--;
 	if (posEnemy.y <= 10) 
@@ -91,6 +90,12 @@ void Enemy::update(int deltaTime)
 		sprite->setPosition(glm::vec2(float(posEnemy.x - scrollDispl), float(posEnemy.y)));
 	}
 	blast->setPosition(posEnemy);
+
+	if (health <= 0) {
+		sprite = NULL;
+		isKilled = true;
+	}
+	else isKilled = false;
 }
 
 
@@ -130,10 +135,6 @@ glm::vec2 Enemy::ret_size() {
 void Enemy::hit() {
 	if (this != NULL) {		
 		--health;
-		if (health == 0) {
-			sprite = NULL;
-			isKilled = true;
-		}
 	}
 }
 

@@ -78,12 +78,12 @@ void PlayScene::init()
 	force = new Force();
 	force->init(texProgram, player);
 
-	
+	blastTex.loadFromFile("images/enemyExplosion.png", TEXTURE_PIXEL_FORMAT_RGBA);
 }
 
 void PlayScene::initEnemies() {
 	
-	int number_of_enemies = 100; //cuantos enemigos hay en el nivel
+	int number_of_enemies = 120; //cuantos enemigos hay en el nivel
 
 	for (int i = 0; i < number_of_enemies; ++i) {
 		float enemy_x;
@@ -264,7 +264,7 @@ void PlayScene::initEnemies() {
 			enemy_x = 70.5f; enemy_y = 8; typeofEnemy = FLOWER;
 			break;
 		case 57:
-			enemy_x = 190.f; enemy_y = 6; typeofEnemy = BOSS;
+			enemy_x = 190.f; enemy_y = 6; typeofEnemy = FLOWER;
 			break;
 		//original above
 		case 58:
@@ -451,10 +451,10 @@ void PlayScene::initEnemies() {
 			enemy_x = 163.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
 			break;
 		case 119:
-			enemy_x = 167.f + 25; enemy_y = 8; typeofEnemy = FLOWER;
+			enemy_x = 180.f; enemy_y = 8; typeofEnemy = BUTTERFLY;
 			break;
 		case 120:
-			enemy_x = 500.f; enemy_y = 8; typeofEnemy = FLOWER;
+			enemy_x = 190.f; enemy_y = 6; typeofEnemy = BOSS;
 			break;
 		}
 
@@ -497,14 +497,14 @@ void PlayScene::checkHits() {
 				}
 				enemyList[j]->hit();					
  				if (enemyList[j]->health_remaining() <= 0) {
-					Sprite* enemyBlast = blast;
-					enemyBlast->setPosition(enemyList[j]->ret_pos());
-					enemyBlast->render();
+					blast = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(1.0f, 1.0f), &blastTex, &texProgram);
+					blast->setPosition(glm::vec2(enemyPos.x - tileMapDispl, enemyPos.y));
+					blastList.insert({ blast, 5 });
+
   					enemyList[j] = NULL;
   					enemyList.erase(enemyList.begin() + j);
 				}
 			}
-
 		}
 	}
 
@@ -533,6 +533,10 @@ void PlayScene::checkHits() {
 				}
 				flowerList[j]->hit();
 				if (flowerList[j]->health_remaining() <= 0) {
+					blast = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(1.0f, 1.0f), &blastTex, &texProgram);
+					blast->setPosition(glm::vec2(enemyPos.x - tileMapDispl, enemyPos.y));
+					blastList.insert({ blast, 5 });
+
 					flowerList[j] = NULL;
 					flowerList.erase(flowerList.begin() + j);
 
@@ -607,6 +611,14 @@ void PlayScene::update(int deltaTime)
 		enemyList[i]->update(deltaTime);	
 	for (int i = 0; i < int(flowerList.size()); ++i)
 		flowerList[i]->update(deltaTime);
+	
+	for (auto it = blastList.begin(); it != blastList.end();) {
+		if (it->second <= 0) it = blastList.erase(it);
+		else {
+			it->second = it->second--;
+			it++;
+		}
+	}
 
 	forceUnit->setPosition(glm::vec2(500 - tileMapDispl, 100));
 	
@@ -680,12 +692,16 @@ void PlayScene::render()
 	map->render();
 	player->render();
 	bulletManager.render();
-	//test->render();
 
 	for (int i = 0; i < enemyList.size(); ++i)
 		enemyList[i]->render();
 	for (int i = 0; i < flowerList.size(); ++i)
 		flowerList[i]->render();
+	
+	std::map<Sprite*, int>::iterator it;
+	for (it = blastList.begin(); it != blastList.end(); it++)
+		it->first->render();
+
 	if(!forceHit) forceUnit->render();
 	force->render();
 }
@@ -740,6 +756,10 @@ void PlayScene::checkForceHits() {
 		if (collisionX && collisionY) {
 			enemyList[j]->hit();
 			if (enemyList[j]->health_remaining() <= 0) {
+				blast = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(1.0f, 1.0f), &blastTex, &texProgram);
+				blast->setPosition(glm::vec2(enemy_pos.x - tileMapDispl, enemy_pos.y));
+				blastList.insert({ blast, 5 });
+
 				enemyList[j] = NULL;
 				enemyList.erase(enemyList.begin() + j);
 			}
@@ -760,6 +780,10 @@ void PlayScene::checkForceHits() {
 		{
 			flowerList[j]->hit();
 			if (flowerList[j]->health_remaining() <= 0) {
+				blast = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(1.0f, 1.0f), &blastTex, &texProgram);
+				blast->setPosition(glm::vec2(enemy_pos.x - tileMapDispl, enemy_pos.y));
+				blastList.insert({ blast, 5 });
+
 				flowerList[j] = NULL;
 				flowerList.erase(flowerList.begin() + j);
 			}

@@ -3,6 +3,7 @@
 
 
 #include <glm/glm.hpp>
+#include <map>
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
@@ -34,6 +35,7 @@ public:
 	void checkCollisionForceUnit();
 	void checkBullets();
 	void checkForceHits();
+	void generateEnemies();
 	void render();
 
 	virtual Scene* changeState();
@@ -52,6 +54,7 @@ private:
 	Texture backgroundSpritesheet;
 	vector<Enemy*> enemyList;
 	vector<Enemy*> flowerList;
+	std::map<Sprite*, int> blastList;
 
 	Sprite* background;
 	BulletManager bulletManager;
