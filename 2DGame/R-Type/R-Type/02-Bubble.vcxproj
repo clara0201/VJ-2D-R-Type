@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\source\repos\VJ-2D-R-Type\Nueva carpeta\2DGame\R-Type\R-Type\Force.h" />
     <ClInclude Include="AnimKeyframes.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletManager.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="TileMap.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\source\repos\VJ-2D-R-Type\Nueva carpeta\2DGame\R-Type\R-Type\Force.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletManager.cpp" />
     <ClCompile Include="CreditsScene.cpp" />

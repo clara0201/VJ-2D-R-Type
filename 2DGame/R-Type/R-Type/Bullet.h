@@ -9,9 +9,11 @@ public:
 	void update(int deltaTime);
 	void render();
 	void setTileMap(TileMap* tileMap);
+	int returnType();
 	~Bullet();
 	glm::vec2 ret_pos();
 	glm::vec2 ret_size();
+	void stopScrollingF();
 	bool ret_player_bullet();
 	bool alive;
 
@@ -22,6 +24,7 @@ private:
 	float speed;
 	int scrollDispl;
 	float desvX;
+	bool stopScrolling;
 	float desvY;
 	glm::vec2 posBullet, size;
 	int dir;
