@@ -646,11 +646,35 @@ void PlayScene::update(int deltaTime)
 		}*/
 	}
 
-	if (Game::instance().getKey('g') || Game::instance().getKey('g') && invCooldown>10) {
-		player->invulnerable = !player->invulnerable;
+	if (Game::instance().getKey('g') || Game::instance().getKey('G') && invCooldown>20) {
+		player->invulnerable = !(player->invulnerable);
 		invCooldown = 0;
 	}
 	invCooldown++;
+
+	//change location
+	int newScroll = tileMapDispl;
+	bool changedScroll = false;
+	if (Game::instance().getKey('1')) {
+		newScroll = 0;
+		changedScroll = true;
+	}
+	if (Game::instance().getKey('2')) {
+		newScroll = 1000;
+		changedScroll = true;
+	}
+	if (Game::instance().getKey('3')) {
+		newScroll = 2500;
+		changedScroll = true;
+	}
+	if (changedScroll) {
+		tileMapDispl = newScroll;
+		for (int i = 0; i < int(enemyList.size()); ++i)
+			enemyList[i]->changeScrollDispl(newScroll);
+		for (int i = 0; i < int(flowerList.size()); ++i)
+			flowerList[i]->changeScrollDispl(newScroll);
+	}
+	
 
 	if (animationAndKeyframe[0] != EXPLOSION)
 		tileMapDispl += 1;
@@ -792,7 +816,6 @@ void PlayScene::checkForceHits() {
 
 
 }
-
 
 //check enemies impacting player
 void PlayScene::checkEnemiesHits() {

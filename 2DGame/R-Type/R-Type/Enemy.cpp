@@ -162,3 +162,7 @@ void Enemy::changeDirection() {
 void Enemy::showExplosion() {
 	isKilled = true;
 }
+
+void Enemy::changeScrollDispl(int newScroll) {
+	scrollDispl = newScroll;
+}

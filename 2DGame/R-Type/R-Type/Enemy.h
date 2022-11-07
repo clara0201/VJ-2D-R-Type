@@ -24,6 +24,7 @@ public:
 	bool ret_direction();
 	void changeDirection();
 	void showExplosion();
+	void changeScrollDispl(int newScroll);
 
 	int health_remaining();
 
