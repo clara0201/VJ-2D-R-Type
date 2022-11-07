@@ -29,8 +29,8 @@ public:
 
 	void initEnemies();
 	void moveEnemies();
-	void stopEnemies();
 	void checkHits();
+	void stopScrollingF();
 	void checkEnemiesHits();
 	void checkCollisionForceUnit();
 	void checkBullets();
@@ -51,23 +51,28 @@ private:
 	float currentTime;
 	glm::mat4 projection;
 	int tileMapDispl;
-	Texture backgroundSpritesheet;
 	vector<Enemy*> enemyList;
 	vector<Enemy*> flowerList;
 	std::map<Sprite*, int> blastList;
 
-	Sprite* background;
-	BulletManager bulletManager;
-	string state;
-	MenuScene* menu;
 	int cooldown;
 	int directionCooldown;
 	bool movingUp;
 	int flowerIterator;
 	int butterflyShootCooldown;
+	bool isBossDead;
+	int bossShootCooldown;
+	bool stopScrolling;
+
 
 	Texture forceUnitTex, blastTex;
 	Sprite *forceUnit, *blast;
+
+	Texture backgroundSpritesheet,  forceUnitTex;
+	Sprite* background, *forceUnit;
+	BulletManager bulletManager;
+	string state;
+	MenuScene* menu;
 	bool forceHit;
 	int invCooldown;
 

@@ -24,8 +24,12 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Bu
 {
 	aux = &shaderProgram;
 	bJumping = false;
+
 	countingShoot = false;
 	invulnerable = false;
+
+	stopScrolling = false;
+
 	timeBetweenBullets = 0;
 	shootingTimer = 0;
 	num_lives = 3;
@@ -59,8 +63,8 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Bu
 		sprite->addKeyframe(EXPLOSION, glm::vec2(0.9f, 0.f));
 		
 	sprite->changeAnimation(0);
-	tileMapDispl = tileMapPos;
-	scrollDispl = tileMapPos;
+	tileMapDispl = tileMapPos;	
+	scrollDispl.x = 0;
 	bM= bulletManager;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 	
@@ -134,7 +138,7 @@ void Player::update(int deltaTime)
 	else if (countingShoot && !Game::instance().getKey(' ') && timeBetweenBullets <= 0) {
 		countingShoot = false;
 		if (shootingTimer >= 10) { //key has been pressed down
-			bM->createPlayerBullet(posPlayer.x, posPlayer.y, 2, *aux);
+			bM->createPlayerBullet(posPlayer.x, posPlayer.y, 3, *aux);
 			timeBetweenBullets = 10;
 		}
 		else {
@@ -144,7 +148,7 @@ void Player::update(int deltaTime)
 	}
 	//end check power shot
 	
-	scrollDispl.x += 1;		
+	if(!stopScrolling) scrollDispl.x += 1;		
 	timeBetweenBullets--;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
@@ -152,6 +156,10 @@ void Player::update(int deltaTime)
 void Player::render()
 {
 	sprite->render();
+}
+void Player::stopScrollingF() 
+{
+	stopScrolling = true;
 }
 
 glm::vec2 Player::getPosition() {

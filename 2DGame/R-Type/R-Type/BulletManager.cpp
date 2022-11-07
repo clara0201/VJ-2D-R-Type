@@ -5,12 +5,15 @@
 #include "BulletManager.h"
 #include "Scene.h"
 
-enum SpreadDeviation {
-	DEVIATION_1L, DEVIATION_2L, NO_DEVIATION, DEVIATION_1R, DEVIATION_2R
+enum bulletTypes
+{
+	PLAYER, BUTTERFLY, BOSS
 };
 
 
+
 void BulletManager::createPlayerBullet(float posPlayerx, float posPlayery, int typeOf, ShaderProgram &shaderProgram) {
+
 	Bullet* new_bull;
 	new_bull = new Bullet;
 	new_bull->setTileMap(map);
@@ -29,7 +32,22 @@ void BulletManager::createEnemyBullet(float posEnemyx, float posEnemyy, float po
 	directionX = directionX / division;
 	directionY = directionY / division;
 	new_bull->setTileMap(map);
-	new_bull->createBullet(posEnemyx, posEnemyy, 1, shaderProgram, 1.5f, 1, directionX, directionY);	
+	new_bull->createBullet(posEnemyx, posEnemyy, 0, shaderProgram, 1.5f, BUTTERFLY, directionX, directionY);	
+	activeBullets.emplace_back(new_bull);
+
+}
+void BulletManager::createBossBullet(float posEnemyx, float posEnemyy, float posPlayerx, float posPlayery, ShaderProgram& shaderProgram) {
+	Bullet* new_bull;
+	new_bull = new Bullet;
+	float directionX = posPlayerx - posEnemyx;
+	float directionY = posPlayery - posEnemyy;
+	float squaredX = directionX * directionX;
+	float squaredY = directionY * directionY;
+	float division = sqrt(squaredX + squaredY);
+	directionX = directionX / division;
+	directionY = directionY / division;
+	new_bull->setTileMap(map);
+	new_bull->createBullet(posEnemyx, posEnemyy, 0, shaderProgram, 1.5f, BOSS, directionX, directionY);
 	activeBullets.emplace_back(new_bull);
 
 }

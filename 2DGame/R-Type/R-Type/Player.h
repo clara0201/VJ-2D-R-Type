@@ -18,6 +18,7 @@ public:
 	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, BulletManager* bulletManager);
 	void update(int deltaTime);
 	void render();
+	void stopScrollingF();
 	void hit();
 	
 	void setTileMap(TileMap *tileMap);
@@ -33,6 +34,7 @@ private:
 	int timeBetweenBullets, shootingTimer;
 	glm::ivec2 tileMapDispl, scrollDispl, posPlayer;
 	int jumpAngle, startY;
+	bool stopScrolling;
 	Texture spritesheet;
 	Texture explosionSpritesheet;
 	Sprite *sprite;

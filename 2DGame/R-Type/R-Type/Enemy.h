@@ -21,6 +21,7 @@ public:
 	glm::vec2 ret_size();
 	int ret_type();
 	void hit();
+	void stopScrollingF();
 	bool ret_direction();
 	void changeDirection();
 	void showExplosion();
@@ -32,12 +33,18 @@ public:
 
 private:
 	BulletManager* bM;
-	int typeofEnemy, health, cooldown;
+	int typeofEnemy, health, cooldown, deathCooldown;
 	glm::vec2 posEnemy, size;
 	float scrollDispl;
 	Player* player;
+
 	Texture spritesheet, blastTex;
 	Sprite* sprite, *blast;
+
+	bool stopScrolling;
+	Texture spritesheet, bossSpritesheet;
+	Sprite* blackSprite;
+
 	TileMap* map;
 	ShaderProgram* aux;
 	int timeToMove;
