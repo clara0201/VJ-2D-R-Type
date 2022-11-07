@@ -63,6 +63,9 @@
     <ClInclude Include="Enemy.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\source\repos\VJ-2D-R-Type\Nueva carpeta\2DGame\R-Type\R-Type\Force.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -111,6 +114,9 @@
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\source\repos\VJ-2D-R-Type\Nueva carpeta\2DGame\R-Type\R-Type\Force.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>

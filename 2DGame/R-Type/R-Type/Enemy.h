@@ -21,6 +21,7 @@ public:
 	glm::vec2 ret_size();
 	int ret_type();
 	void hit();
+	void stopScrollingF();
 	bool ret_direction();
 	void changeDirection();
 
@@ -33,8 +34,10 @@ private:
 	glm::vec2 posEnemy, size;
 	float scrollDispl;
 	Player* player;
+	bool stopScrolling;
 	Texture spritesheet;
 	Sprite* sprite;
+	Sprite* blackSprite;
 	TileMap* map;
 	ShaderProgram* aux;
 	int timeToMove;

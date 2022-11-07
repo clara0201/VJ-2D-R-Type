@@ -24,6 +24,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Bu
 {
 	aux = &shaderProgram;
 	bJumping = false;
+	stopScrolling = false;
 	timeBetweenBullets = 0;
 	spritesheet.loadFromFile("images/naveMasExplosion.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(28, 16), glm::vec2(0.1, 1), &spritesheet, &shaderProgram);
@@ -55,8 +56,8 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Bu
 		sprite->addKeyframe(EXPLOSION, glm::vec2(0.9f, 0.f));
 		
 	sprite->changeAnimation(0);
-	tileMapDispl = tileMapPos;
-	scrollDispl = tileMapPos;
+	tileMapDispl = tileMapPos;	
+	scrollDispl.x = 0;
 	bM= bulletManager;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 	
@@ -125,7 +126,7 @@ void Player::update(int deltaTime)
 		timeBetweenBullets = 10;
 	}
 	
-	scrollDispl.x += 1;		
+	if(!stopScrolling) scrollDispl.x += 1;		
 	timeBetweenBullets--;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
@@ -133,6 +134,10 @@ void Player::update(int deltaTime)
 void Player::render()
 {
 	sprite->render();
+}
+void Player::stopScrollingF() 
+{
+	stopScrolling = true;
 }
 
 glm::vec2 Player::getPosition() {

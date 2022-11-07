@@ -10,12 +10,17 @@
 #define BUTTERFLY 1
 #define FLY 2
 #define BOSS 3
+#define MOVE_UP 4
+#define MOVE_DOWN 5
+#define OCULTAR 6
 
 void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Player* target, int typeOf, BulletManager* bulletManager)
 {
 	typeofEnemy = typeOf;
 	movingUp = rand() % 2 == 0;
 	directionCooldown = 20;
+	stopScrolling = false;
+	
 	if (typeOf == FLOWER) {
 		health = 1;
 		size.x = 20;
@@ -42,18 +47,34 @@ void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Play
 	}
 	else if (typeOf == BOSS) {
 		health = 20;
+		size.x =  70;
+		size.y = 150;
+		spritesheet.loadFromFile("images/tailSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(glm::ivec2(120, 100), glm::vec2(0.25f, 1.0f), &spritesheet, &shaderProgram);
+		sprite->setNumberAnimations(6);
 
-		spritesheet.loadFromFile("images/bossTail.png", TEXTURE_PIXEL_FORMAT_RGBA);
-		sprite = Sprite::createSprite(glm::ivec2(67, 84), glm::vec2(1.0f, 1.0f), &spritesheet, &shaderProgram);
+		sprite->setAnimationSpeed(MOVE_UP, 4);
+		sprite->addKeyframe(MOVE_UP, glm::vec2(0.0f, 0.f));
+		sprite->addKeyframe(MOVE_UP, glm::vec2(0.25f, 0.f));
+		sprite->addKeyframe(MOVE_UP, glm::vec2(0.5f, 0.f));
+		sprite->addKeyframe(MOVE_UP, glm::vec2(0.75f, 0.f));
+		sprite->setAnimationSpeed(MOVE_DOWN, 4);
+		sprite->addKeyframe(MOVE_DOWN, glm::vec2(0.75f, 0.f));
+		sprite->addKeyframe(MOVE_DOWN, glm::vec2(0.5f, 0.f));
+		sprite->addKeyframe(MOVE_DOWN, glm::vec2(0.25f, 0.f));
+		sprite->addKeyframe(MOVE_DOWN, glm::vec2(0.0f, 0.f));
+		sprite->changeAnimation(MOVE_DOWN);
+		sprite->setPosition(glm::vec2(float(posEnemy.x), float(posEnemy.y)));
 
-		sprite->setPosition(glm::vec2(float(posEnemy.x), float(posEnemy.x)));
+
 	}
 	cooldown = 50;
 	timeToMove = 10;
 	iterator = 0;	
 
 	aux = &shaderProgram;
-	scrollDispl = tileMapPos.x;
+	//scrollDispl = tileMapPos.x;
+	scrollDispl = 0;
 	
 
 
@@ -64,7 +85,9 @@ void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Play
 	bM = bulletManager;	
 }
 
-
+void Enemy::stopScrollingF() {
+	stopScrolling = true;
+}
 void Enemy::update(int deltaTime)
 {
 
@@ -79,23 +102,28 @@ void Enemy::update(int deltaTime)
 			movingUp = !movingUp;
 		directionCooldown = 20;
 	}
-	scrollDispl += 0;
+	if(!stopScrolling) scrollDispl +=2;
 	if (timeToMove <= 0) {
 		if(typeofEnemy != BOSS)posEnemy.x = posEnemy.x- 5.f;
 		iterator++;
 		timeToMove = 10;		
 	}
-	if (sprite != NULL) {
-		sprite->update(deltaTime);
+	if (sprite != NULL && health > 0 ) {
 		sprite->setPosition(glm::vec2(float(posEnemy.x - scrollDispl), float(posEnemy.y)));
+		if (sprite->animation() == MOVE_UP && sprite->keyframe() == 3) 
+			sprite->changeAnimation(MOVE_DOWN);
+		if (sprite->animation() == MOVE_DOWN && sprite->keyframe() == 3) 
+			sprite->changeAnimation(MOVE_UP);
+		sprite->update(deltaTime);
 	}
+
 }
 
 
 
 void Enemy::render()
 {
-	sprite->render();
+	if(health > 0)sprite->render();
 }
 
 void Enemy::setTileMap(TileMap* tileMap)
@@ -106,7 +134,7 @@ void Enemy::setTileMap(TileMap* tileMap)
 void Enemy::setPosition(const glm::vec2& pos)
 {
 	posEnemy = pos;
-	sprite->setPosition(glm::vec2(float(posEnemy.x - scrollDispl), float(posEnemy.y)));
+	if (health > 0) sprite->setPosition(glm::vec2(float(posEnemy.x - scrollDispl), float(posEnemy.y)));
 }
 
 
@@ -119,6 +147,8 @@ glm::vec2 Enemy::ret_pos() {
 }
 
 glm::vec2 Enemy::ret_size() {
+	if (typeofEnemy == BOSS)
+		int i = 0;
 	if (this != NULL)
 		return size;
 	return glm::vec2(0.0f, 0.0f);
@@ -128,7 +158,9 @@ void Enemy::hit() {
 	if (this != NULL) {		
 		--health;
 		if (health == 0) {
-			sprite = NULL;
+			if (typeofEnemy == BOSS)
+ 				int j = 4;
+       			sprite = NULL;
 		}
 	}
 }

@@ -4,10 +4,6 @@
 #include <GL/glut.h>
 #include "Bullet.h"
 
-enum directions //0, 1, 2, 3
-{
-	LEFT, RIGHT, UP, DOWN, UR, DR, UL, DL
-};
 
 enum anim
 {
@@ -15,7 +11,7 @@ enum anim
 };
 enum bulletTypes
 {
-	PLAYER, BUTTERFLY
+	PLAYER, BUTTERFLY, BOSS
 };
 
 
@@ -50,21 +46,41 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 		sprite = Sprite::createSprite(glm::ivec2(6, 6), glm::vec2(1.0f, 1.0f), &spritesheet, &shaderProgram);
 
 		sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
+
+	}
+	else if (typeOfBullet == BOSS) {
+		size.x = 60;
+		size.y = 60;
+
+		spritesheet.loadFromFile("images/naveMasExplosion.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		sprite = Sprite::createSprite(glm::ivec2(28, 16), glm::vec2(0.1, 1), &spritesheet, &shaderProgram);
+		sprite->setNumberAnimations(50);
+
+		sprite->setAnimationSpeed(49, 1);
+		sprite->addKeyframe(49, glm::vec2(0.9f, 0.f));
+		sprite->changeAnimation(49);
+
+		
+		
+
+		sprite->setPosition(glm::vec2(float(posBullet.x), float(posBullet.y)));
 	}
 	speed = speedy;
 	typeOf = typeOfBullet;
-	scrollDispl = posx;
-	size.x = 16;
-	size.y = 8;
+	scrollDispl = 0; //TODO CAMBIAR
 	alive = true;
+	stopScrolling = false;
 
+}
+void Bullet::stopScrollingF() {
+	stopScrolling = true;
 }
 
 void Bullet::update(int deltaTime) {
 		
 	posBullet.x += 1 * speed* desvX;	
 	posBullet.y += 1 * speed *desvY;
-	scrollDispl += 1;
+	if(!stopScrolling) scrollDispl += 2;
 	sprite->update(deltaTime);
 	/*int posBulletY = float(posBullet.y);
 	
