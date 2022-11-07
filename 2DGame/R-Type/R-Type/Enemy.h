@@ -30,12 +30,12 @@ public:
 
 private:
 	BulletManager* bM;
-	int typeofEnemy, health, cooldown;
+	int typeofEnemy, health, cooldown, deathCooldown;
 	glm::vec2 posEnemy, size;
 	float scrollDispl;
 	Player* player;
 	bool stopScrolling;
-	Texture spritesheet;
+	Texture spritesheet, bossSpritesheet;
 	Sprite* sprite;
 	Sprite* blackSprite;
 	TileMap* map;

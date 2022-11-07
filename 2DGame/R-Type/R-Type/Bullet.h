@@ -9,6 +9,7 @@ public:
 	void update(int deltaTime);
 	void render();
 	void setTileMap(TileMap* tileMap);
+	int returnType();
 	~Bullet();
 	glm::vec2 ret_pos();
 	glm::vec2 ret_size();

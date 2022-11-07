@@ -75,12 +75,15 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 void Bullet::stopScrollingF() {
 	stopScrolling = true;
 }
+int Bullet::returnType() {
+	return typeOf;
+}
 
 void Bullet::update(int deltaTime) {
 		
 	posBullet.x += 1 * speed* desvX;	
 	posBullet.y += 1 * speed *desvY;
-	if(!stopScrolling) scrollDispl += 2;
+	if(!stopScrolling) scrollDispl += 1;
 	sprite->update(deltaTime);
 	/*int posBulletY = float(posBullet.y);
 	

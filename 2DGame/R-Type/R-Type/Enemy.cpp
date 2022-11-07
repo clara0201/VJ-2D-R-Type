@@ -12,12 +12,12 @@
 #define BOSS 3
 #define MOVE_UP 4
 #define MOVE_DOWN 5
-#define OCULTAR 6
 
 void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Player* target, int typeOf, BulletManager* bulletManager)
 {
 	typeofEnemy = typeOf;
 	movingUp = rand() % 2 == 0;
+	deathCooldown = 10000;
 	directionCooldown = 20;
 	stopScrolling = false;
 	
@@ -66,6 +66,25 @@ void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Play
 		sprite->changeAnimation(MOVE_DOWN);
 		sprite->setPosition(glm::vec2(float(posEnemy.x), float(posEnemy.y)));
 
+		bossSpritesheet.loadFromFile("images/ocultarSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
+		blackSprite = Sprite::createSprite(glm::ivec2(300, 288), glm::vec2(0.5f, 1.0f), &bossSpritesheet, &shaderProgram);
+		blackSprite->setNumberAnimations(10);
+		int MUERTO = 7;
+		int OCULTAR = 6;
+		int VIVO = 8;
+
+		blackSprite->setAnimationSpeed(OCULTAR, 3);
+		blackSprite->addKeyframe(OCULTAR, glm::vec2(0.0f, 0.f));
+		blackSprite->addKeyframe(OCULTAR, glm::vec2(0.5f, 0.f));
+		blackSprite->setAnimationSpeed(MUERTO, 7);
+		blackSprite->addKeyframe(MUERTO, glm::vec2(0.5f, 0.f));
+		blackSprite->setAnimationSpeed(VIVO, 7);
+		blackSprite->addKeyframe(VIVO, glm::vec2(0.0f, 0.f));
+
+		blackSprite->changeAnimation(VIVO);
+		blackSprite->setPosition(glm::vec2(float((183 * 16) - scrollDispl), float(0)));
+
+
 
 	}
 	cooldown = 50;
@@ -92,6 +111,8 @@ void Enemy::update(int deltaTime)
 {
 
 	timeToMove--;
+	if (deathCooldown <=0 && blackSprite != NULL && blackSprite->animation() == 6) blackSprite->changeAnimation(7);
+	deathCooldown--;
 	directionCooldown--;
 	if (posEnemy.y <= 10) 
 		movingUp = false;
@@ -102,7 +123,7 @@ void Enemy::update(int deltaTime)
 			movingUp = !movingUp;
 		directionCooldown = 20;
 	}
-	if(!stopScrolling) scrollDispl +=2;
+	if(!stopScrolling) scrollDispl +=1;
 	if (timeToMove <= 0) {
 		if(typeofEnemy != BOSS)posEnemy.x = posEnemy.x- 5.f;
 		iterator++;
@@ -110,12 +131,14 @@ void Enemy::update(int deltaTime)
 	}
 	if (sprite != NULL && health > 0 ) {
 		sprite->setPosition(glm::vec2(float(posEnemy.x - scrollDispl), float(posEnemy.y)));
+		if(blackSprite!= NULL)blackSprite->setPosition(glm::vec2(float((183 * 16) - scrollDispl), float(0)));
 		if (sprite->animation() == MOVE_UP && sprite->keyframe() == 3) 
 			sprite->changeAnimation(MOVE_DOWN);
 		if (sprite->animation() == MOVE_DOWN && sprite->keyframe() == 3) 
 			sprite->changeAnimation(MOVE_UP);
 		sprite->update(deltaTime);
 	}
+	if(blackSprite!= NULL) blackSprite->update(deltaTime);
 
 }
 
@@ -124,6 +147,7 @@ void Enemy::update(int deltaTime)
 void Enemy::render()
 {
 	if(health > 0)sprite->render();
+	if(typeofEnemy == BOSS) blackSprite->render();
 }
 
 void Enemy::setTileMap(TileMap* tileMap)
@@ -157,10 +181,12 @@ glm::vec2 Enemy::ret_size() {
 void Enemy::hit() {
 	if (this != NULL) {		
 		--health;
-		if (health == 0) {
-			if (typeofEnemy == BOSS)
- 				int j = 4;
+		if (health <= 0) {
+			if (typeofEnemy == BOSS) {
        			sprite = NULL;
+				blackSprite->changeAnimation(6);
+				deathCooldown = 200;
+			}
 		}
 	}
 }

@@ -33,7 +33,6 @@ public:
 	void checkEnemiesHits();
 	void checkCollisionForceUnit();
 	void checkBullets();
-	void initBossBlackSprite();
 	void render();
 
 	virtual Scene* changeState();
@@ -57,11 +56,12 @@ private:
 	bool movingUp;
 	int flowerIterator;
 	int butterflyShootCooldown;
+	bool isBossDead;
 	int bossShootCooldown;
 	bool stopScrolling;
 
-	Texture backgroundSpritesheet, bossSpritesheet, forceUnitTex;
-	Sprite* background, *forceUnit, *blackSprite;
+	Texture backgroundSpritesheet,  forceUnitTex;
+	Sprite* background, *forceUnit;
 	BulletManager bulletManager;
 	string state;
 	MenuScene* menu;

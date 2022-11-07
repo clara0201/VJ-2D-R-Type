@@ -16,11 +16,6 @@
 #define INIT_PLAYER_X_TILES 4
 #define INIT_PLAYER_Y_TILES 2
 
-enum PlayerAnims
-{
-	STAND_UP, STAND_DOWN, STAND_RIGHT, MOVE_UP, MOVE_DOWN, EXPLOSION
-};
-
 
 
 PlayScene::PlayScene(MenuScene* menuS)
@@ -50,12 +45,16 @@ PlayScene::~PlayScene()
 
 	bossShootCooldown = 10;
 	movingUp = true;
+	isBossDead = false;
+
 	flowerIterator = 0;
 }
 
 
 void PlayScene::init()
-{
+{	
+	isBossDead = false;
+
 	state = "ON";
 	forceHit = false;
 	stopScrolling = false;
@@ -67,7 +66,6 @@ void PlayScene::init()
 	background->setPosition(glm::vec2(0.0f, 0.0f));
 	player = new Player();
 	initEnemies();
-	initBossBlackSprite();
 	bulletManager.setTileMap(map);
 
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, &bulletManager);
@@ -259,7 +257,7 @@ void PlayScene::initEnemies() {
 			enemy_x = 70.5f; enemy_y = 8; typeofEnemy = FLOWER;
 			break;
 		case 57:
-			enemy_x = 183.f; enemy_y = 6; typeofEnemy = BOSS;
+			enemy_x = 178.f; enemy_y = 5.4f; typeofEnemy = BOSS;
 			break;
 
 		}
@@ -274,9 +272,7 @@ void PlayScene::initEnemies() {
 }
 void PlayScene::checkHits() {
 	vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
-
-
-
+	
 
 	//vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
 	for (int j = 0; j < int(flowerList.size() - 1); ++j) {
@@ -296,11 +292,14 @@ void PlayScene::checkHits() {
 			bool collisionY = (((flowerList[j]->ret_pos().y + flowerList[j]->ret_size().y + 1.5f) >= activeBullets[i]->ret_pos().y) &&
 				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y + 1.5f) >= flowerList[j]->ret_pos().y));
 
-			if (activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x + tileMapDispl >= 2970) { //hit boss
+			if (activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x + tileMapDispl >= 2970 && activeBullets[i]->returnType()!= 2) { //hit boss
 				activeBullets[i]->~Bullet();
 				activeBullets.erase(activeBullets.begin() + i);
 				bulletManager.set_actBullets(activeBullets);
-				if(enemyList[enemyList.size() - 1]->health_remaining()>=0 )enemyList[enemyList.size() - 1]->hit();
+				if(enemyList[enemyList.size() - 1]->health_remaining()>0 )enemyList[enemyList.size() - 1]->hit();
+				else {  					
+					isBossDead = true;					
+				}
 				
 			}
 			if (collisionX && collisionY) {
@@ -310,7 +309,89 @@ void PlayScene::checkHits() {
 				flowerList[j]->hit();
 				if (flowerList[j]->health_remaining() <= 0) {
 					flowerList[j] = NULL;
-					flowerList.erase(flowerList.begin() + j);
+					flowerList.erase(flowerList.begin() + j); // noes
+
+				}
+			}
+
+		}
+	}
+	for (int j = 0; j < int(flowerList.size() - 1); ++j) {
+		for (int i = 0; i < int(activeBullets.size() - 1); ++i) {
+			//colision en las X
+			//glm::ivec2(bulletPosition.x + tileMapDispl + 35.0f, bulletPosition.y)
+			Enemy* enemy = flowerList[j];
+			Bullet* bullet = activeBullets[i];
+			glm::vec2 enemyPos = enemy->ret_pos();
+			glm::vec2 enemySize = enemy->ret_size();
+			glm::vec2 bulletPos = bullet->ret_pos();
+			glm::vec2 bulletSize = bullet->ret_size();
+
+			bool collisionX = (((flowerList[j]->ret_pos().x + flowerList[j]->ret_size().x + 1.5f) >= activeBullets[i]->ret_pos().x + tileMapDispl + 38.0f) &&
+				((activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x + tileMapDispl + 38.0f) >= flowerList[j]->ret_pos().x));
+			//colision en las Y
+			bool collisionY = (((flowerList[j]->ret_pos().y + flowerList[j]->ret_size().y + 1.5f) >= activeBullets[i]->ret_pos().y) &&
+				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y + 1.5f) >= flowerList[j]->ret_pos().y));
+
+			if (activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x + tileMapDispl >= 2970 && activeBullets[i]->returnType()!= 2) { //hit boss
+				activeBullets[i]->~Bullet();
+				activeBullets.erase(activeBullets.begin() + i);
+				bulletManager.set_actBullets(activeBullets);
+				if(enemyList[enemyList.size() - 1]->health_remaining()>0 )enemyList[enemyList.size() - 1]->hit();
+				else {  					
+					isBossDead = true;					
+				}
+				
+			}
+			if (collisionX && collisionY) {
+				activeBullets[i]->~Bullet();
+				activeBullets.erase(activeBullets.begin() + i);
+				bulletManager.set_actBullets(activeBullets);
+				flowerList[j]->hit();
+				if (flowerList[j]->health_remaining() <= 0) {
+					flowerList[j] = NULL;
+					flowerList.erase(flowerList.begin() + j); // noes
+
+				}
+			}
+
+		}
+	}
+	for (int j = 0; j < int(enemyList.size() - 1); ++j) {
+		for (int i = 0; i < int(activeBullets.size() - 1); ++i) {
+			//colision en las X
+			//glm::ivec2(bulletPosition.x + tileMapDispl + 35.0f, bulletPosition.y)
+			Enemy* enemy = enemyList[j];
+			Bullet* bullet = activeBullets[i];
+			glm::vec2 enemyPos = enemy->ret_pos();
+			glm::vec2 enemySize = enemy->ret_size();
+			glm::vec2 bulletPos = bullet->ret_pos();
+			glm::vec2 bulletSize = bullet->ret_size();
+
+			bool collisionX = (((enemyList[j]->ret_pos().x + enemyList[j]->ret_size().x + 1.5f) >= activeBullets[i]->ret_pos().x + tileMapDispl + 38.0f) &&
+				((activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x + tileMapDispl + 38.0f) >= enemyList[j]->ret_pos().x));
+			//colision en las Y
+			bool collisionY = (((enemyList[j]->ret_pos().y + enemyList[j]->ret_size().y + 1.5f) >= activeBullets[i]->ret_pos().y) &&
+				((activeBullets[i]->ret_pos().y + activeBullets[i]->ret_size().y + 1.5f) >= enemyList[j]->ret_pos().y));
+
+			if (activeBullets[i]->ret_pos().x + activeBullets[i]->ret_size().x + tileMapDispl >= 2970 && activeBullets[i]->returnType()!= 2) { //hit boss
+				activeBullets[i]->~Bullet();
+				activeBullets.erase(activeBullets.begin() + i);
+				bulletManager.set_actBullets(activeBullets);
+				if(enemyList[enemyList.size() - 1]->health_remaining()>0 )enemyList[enemyList.size() - 1]->hit();
+				else {  					
+					isBossDead = true;					
+				}
+				
+			}
+			if (collisionX && collisionY) {
+				activeBullets[i]->~Bullet();
+				activeBullets.erase(activeBullets.begin() + i);
+				bulletManager.set_actBullets(activeBullets);
+				enemyList[j]->hit();
+				if (enemyList[j]->health_remaining() <= 0) {
+					enemyList[j] = NULL;
+					enemyList.erase(enemyList.begin() + j); // noes
 
 				}
 			}
@@ -318,27 +399,7 @@ void PlayScene::checkHits() {
 		}
 	}
 }
-void PlayScene::initBossBlackSprite() {
-	bossSpritesheet.loadFromFile("images/ocultarSprite.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	blackSprite = Sprite::createSprite(glm::ivec2(300, 288), glm::vec2(0.5f, 1.0f), &bossSpritesheet, &texProgram);
-	blackSprite->setNumberAnimations(9);
-	int OCULTAR = 6;
-	int MUERTO = 7;
-	int VIVO = 8;
 
-	blackSprite->setAnimationSpeed(OCULTAR, 6);
-	blackSprite->addKeyframe(OCULTAR, glm::vec2(0.0f, 0.f));
-	blackSprite->addKeyframe(OCULTAR, glm::vec2(0.5f, 0.f));
-	blackSprite->setAnimationSpeed(MUERTO, 7);
-	blackSprite->addKeyframe(MUERTO, glm::vec2(0.5f, 0.f));
-	blackSprite->setAnimationSpeed(VIVO, 7);
-	blackSprite->addKeyframe(VIVO, glm::vec2(0.0f, 0.f));
-
-
-	blackSprite->changeAnimation(VIVO);
-	blackSprite->setPosition(glm::vec2(float(170 * map->getTileSize()- tileMapDispl), float(6 * map->getTileSize())));
-	blackSprite->update(1);
-}
 void PlayScene::moveEnemies() {
 
 	cooldown = 5;	
@@ -353,11 +414,12 @@ void PlayScene::moveEnemies() {
 		Enemy* butterfly = enemyList[rand() % enemyList.size()];
 		bulletManager.createEnemyBullet(butterfly->ret_pos().x - tileMapDispl, butterfly->ret_pos().y, player->getPosition().x, player->getPosition().y, texProgram);
 	}
-	if (bossShootCooldown <= 0  &&  player->getPosition().x + tileMapDispl> 2600) {
+	if (bossShootCooldown <= 0  &&  player->getPosition().x + tileMapDispl> 2750 ) {
 		bossShootCooldown = 50;
 		stopScrollingF();
 		int bossHeight = 64;
-		bulletManager.createBossBullet(500, bossHeight, player->getPosition().x, player->getPosition().y, texProgram);		
+		if(!isBossDead)
+			bulletManager.createBossBullet(315, bossHeight, player->getPosition().x, player->getPosition().y, texProgram);
 		
 	}
 	Enemy* flower = flowerList[flowerIterator % flowerList.size()];
@@ -399,6 +461,8 @@ void PlayScene::update(int deltaTime)
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	cooldown--;
+	
+	if(isBossDead)
 	directionCooldown--;
 	butterflyShootCooldown--;
 	bossShootCooldown--;
@@ -409,16 +473,14 @@ void PlayScene::update(int deltaTime)
 	force->update(deltaTime);
 
 	moveEnemies();
-	checkBullets();
-	blackSprite->setPosition(glm::vec2(float(183 * map->getTileSize() - tileMapDispl), float(0 * map->getTileSize())));
-	blackSprite->update(1);
+	//checkBullets();
 
-	//checkHits();
+	checkHits();
 	//checkEnemiesHits();
 
 	glm::vec2 animationAndKeyframe = player->getAnimationAndKeyframe();
 	if (!stopScrolling)
-		tileMapDispl += 2;
+		tileMapDispl += 1;
 	else {
 		if (animationAndKeyframe[1] == 4) state = "MENU";
 	}
@@ -475,7 +537,6 @@ void PlayScene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
 	player->render();
-	blackSprite->render();
 	bulletManager.render();
 
 	for (int i = 0; i < enemyList.size(); ++i)
@@ -496,7 +557,7 @@ void PlayScene::checkBullets() {
 			bulletManager.set_actBullets(activeBullets);
 		}
 
-		if (false)
+		if (true)
 		{
 			bool collisionX = (((bulletPosition.x + 6 + 1.5f) >= player->getPosition().x + tileMapDispl) &&
 				((player->getPosition().x + 28 + tileMapDispl) >= bulletPosition.x));
