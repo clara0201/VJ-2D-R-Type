@@ -44,6 +44,10 @@ void Force::enable() {
 	//force->setPosition(glm::ivec2(100, 200));
 }
 
+void Force::disable() {
+	enabled = false;
+}
+
 void Force::checkCollision()
 {
 	glm::ivec2 posPlayer = player->getPosition();

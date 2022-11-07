@@ -8,6 +8,7 @@ void Game::init()
 	bPlay = true;
 	scene = new MenuScene();
 	scene->init();
+	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 }
 
 bool Game::update(int deltaTime)

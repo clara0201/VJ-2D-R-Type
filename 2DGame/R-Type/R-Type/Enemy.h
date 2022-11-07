@@ -24,8 +24,11 @@ public:
 	void stopScrollingF();
 	bool ret_direction();
 	void changeDirection();
+	void showExplosion();
+	void changeScrollDispl(int newScroll);
 
 	int health_remaining();
+
 	~Enemy();
 
 private:
@@ -34,17 +37,22 @@ private:
 	glm::vec2 posEnemy, size;
 	float scrollDispl;
 	Player* player;
+
+	Texture spritesheet, blastTex;
+	Sprite* sprite, *blast;
+
 	bool stopScrolling;
 	Texture spritesheet, bossSpritesheet;
-	Sprite* sprite;
 	Sprite* blackSprite;
+
 	TileMap* map;
 	ShaderProgram* aux;
 	int timeToMove;
 	int iterator;
 	bool movingUp;
 	int directionCooldown;
-  ShaderProgram* shaderProgram;
+	ShaderProgram* shaderProgram;
+	bool isKilled;
 
 };
 #endif

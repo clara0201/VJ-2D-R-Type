@@ -25,10 +25,13 @@ public:
 	void setPosition(const glm::vec2 &pos);
 	glm::vec2 getAnimationAndKeyframe();
 	glm::vec2 getPosition();
+
+	bool invulnerable;
+	int num_lives;
 	
 private:
-	bool bJumping;
-	int timeBetweenBullets;
+	bool bJumping, countingShoot;
+	int timeBetweenBullets, shootingTimer;
 	glm::ivec2 tileMapDispl, scrollDispl, posPlayer;
 	int jumpAngle, startY;
 	bool stopScrolling;

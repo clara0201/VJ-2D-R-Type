@@ -8,7 +8,7 @@
 class BulletManager
 {
 public:
-	void createPlayerBullet(float posPlayerx, float posPlayery, ShaderProgram& shaderProgram);
+	void createPlayerBullet(float posPlayerx, float posPlayery, int type, ShaderProgram& shaderProgram);
 	void createEnemyBullet(float posEnemyx, float posEnemyy, float posPlayerx, float posPlayery, ShaderProgram& shaderProgram);
 	void createBossBullet(float posEnemyx, float posEnemyy, float posPlayerx, float posPlayery, ShaderProgram& shaderProgram);
 	void setTileMap(TileMap* tileMap);

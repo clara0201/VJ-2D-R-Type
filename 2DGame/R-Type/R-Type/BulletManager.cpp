@@ -12,11 +12,12 @@ enum bulletTypes
 
 
 
-void BulletManager::createPlayerBullet(float posPlayerx, float posPlayery, ShaderProgram &shaderProgram) {
+void BulletManager::createPlayerBullet(float posPlayerx, float posPlayery, int typeOf, ShaderProgram &shaderProgram) {
+
 	Bullet* new_bull;
 	new_bull = new Bullet;
 	new_bull->setTileMap(map);
-	new_bull->createBullet(posPlayerx, posPlayery, 1, shaderProgram, 1.5f, 0, 1.f, 0.f);
+	new_bull->createBullet(posPlayerx, posPlayery, 1, shaderProgram, 1.5f, typeOf, 1.f, 0.f);
 	activeBullets.emplace_back(new_bull);	
 }
 

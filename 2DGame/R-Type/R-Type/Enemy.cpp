@@ -19,6 +19,8 @@ void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Play
 	movingUp = rand() % 2 == 0;
 	deathCooldown = 10000;
 	directionCooldown = 20;
+
+	isKilled = false;
 	stopScrolling = false;
 	
 	if (typeOf == FLOWER) {
@@ -95,13 +97,13 @@ void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Play
 	//scrollDispl = tileMapPos.x;
 	scrollDispl = 0;
 	
-
-
 	//sprite->addKeyframe(0, glm::vec2(0.0f, 0.0f));
-	
 	sprite->setPosition(glm::vec2(float(posEnemy.x - scrollDispl), float(posEnemy.y)));	
 	player = target;
 	bM = bulletManager;	
+
+	blastTex.loadFromFile("images/enemyExplosion.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	blast = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(1.0f, 1.0f), &blastTex, &shaderProgram);
 }
 
 void Enemy::stopScrollingF() {
@@ -109,7 +111,6 @@ void Enemy::stopScrollingF() {
 }
 void Enemy::update(int deltaTime)
 {
-
 	timeToMove--;
 	if (deathCooldown <=0 && blackSprite != NULL && blackSprite->animation() == 6) blackSprite->changeAnimation(7);
 	deathCooldown--;
@@ -123,7 +124,9 @@ void Enemy::update(int deltaTime)
 			movingUp = !movingUp;
 		directionCooldown = 20;
 	}
+
 	if(!stopScrolling) scrollDispl +=1;
+
 	if (timeToMove <= 0) {
 		if(typeofEnemy != BOSS)posEnemy.x = posEnemy.x- 5.f;
 		iterator++;
@@ -138,7 +141,17 @@ void Enemy::update(int deltaTime)
 			sprite->changeAnimation(MOVE_UP);
 		sprite->update(deltaTime);
 	}
+
+	blast->setPosition(posEnemy);
+
+	if (health <= 0) {
+		sprite = NULL;
+		isKilled = true;
+	}
+	else isKilled = false;
+
 	if(blackSprite!= NULL) blackSprite->update(deltaTime);
+
 
 }
 
@@ -146,8 +159,11 @@ void Enemy::update(int deltaTime)
 
 void Enemy::render()
 {
-	if(health > 0)sprite->render();
-	if(typeofEnemy == BOSS) blackSprite->render();
+
+  if(typeofEnemy == BOSS) blackSprite->render();
+	if (!isKilled) sprite->render();
+	else blast->render();
+
 }
 
 void Enemy::setTileMap(TileMap* tileMap)
@@ -188,9 +204,9 @@ void Enemy::hit() {
 				deathCooldown = 200;
 			}
 		}
+
 	}
 }
-
 
 int Enemy::health_remaining() {
 	if (this != NULL)
@@ -211,4 +227,12 @@ void Enemy::changeDirection() {
 	if (this != NULL)
 		movingUp = !movingUp;
 	return ;
+}
+
+void Enemy::showExplosion() {
+	isKilled = true;
+}
+
+void Enemy::changeScrollDispl(int newScroll) {
+	scrollDispl = newScroll;
 }

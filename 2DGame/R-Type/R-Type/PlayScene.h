@@ -3,6 +3,7 @@
 
 
 #include <glm/glm.hpp>
+#include <map>
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
@@ -33,6 +34,8 @@ public:
 	void checkEnemiesHits();
 	void checkCollisionForceUnit();
 	void checkBullets();
+	void checkForceHits();
+	void generateEnemies();
 	void render();
 
 	virtual Scene* changeState();
@@ -50,6 +53,7 @@ private:
 	int tileMapDispl;
 	vector<Enemy*> enemyList;
 	vector<Enemy*> flowerList;
+	std::map<Sprite*, int> blastList;
 
 	int cooldown;
 	int directionCooldown;
@@ -60,12 +64,17 @@ private:
 	int bossShootCooldown;
 	bool stopScrolling;
 
+
+	Texture forceUnitTex, blastTex;
+	Sprite *forceUnit, *blast;
+
 	Texture backgroundSpritesheet,  forceUnitTex;
 	Sprite* background, *forceUnit;
 	BulletManager bulletManager;
 	string state;
 	MenuScene* menu;
 	bool forceHit;
+	int invCooldown;
 
 };
 
