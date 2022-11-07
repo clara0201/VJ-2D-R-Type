@@ -20,6 +20,7 @@ public:
 	glm::vec2 ret_pos();
 	glm::vec2 ret_size();
 	int ret_type();
+	bool isFinished();
 	void hit();
 	void stopScrollingF();
 	bool ret_direction();
@@ -38,11 +39,11 @@ private:
 	float scrollDispl;
 	Player* player;
 
-	Texture spritesheet, blastTex;
-	Sprite* sprite, *blast;
+	Texture spritesheet, winTex,  blastTex;
+	Sprite* sprite, *winScreen, *blast;
 
 	bool stopScrolling;
-	Texture spritesheet, bossSpritesheet;
+	Texture bossSpritesheet;
 	Sprite* blackSprite;
 
 	TileMap* map;
@@ -52,6 +53,7 @@ private:
 	bool movingUp;
 	int directionCooldown;
 	ShaderProgram* shaderProgram;
+
 	bool isKilled;
 
 };

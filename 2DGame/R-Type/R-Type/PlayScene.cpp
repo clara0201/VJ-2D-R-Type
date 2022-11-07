@@ -544,7 +544,7 @@ void PlayScene::checkHits() {
 				bulletManager.set_actBullets(activeBullets);
 				if(enemyList[enemyList.size() - 1]->health_remaining()>0 )enemyList[enemyList.size() - 1]->hit();
 				else {  					
-					isBossDead = true;					
+ 					isBossDead = true;					
 				}
 				
 			}
@@ -674,7 +674,7 @@ void PlayScene::update(int deltaTime)
 	player->update(deltaTime);
 	cooldown--;
 	
-	if(isBossDead)
+	if (isBossDead && enemyList[enemyList.size() - 1]->isFinished())state = "MENU";
 	directionCooldown--;
 	butterflyShootCooldown--;
 	bossShootCooldown--;
@@ -683,7 +683,8 @@ void PlayScene::update(int deltaTime)
 	bulletManager.update(deltaTime);
 	forceUnit->update(deltaTime);
 	force->update(deltaTime);
-
+	
+		
 	checkBullets();
 	moveEnemies();
 
@@ -763,9 +764,9 @@ void PlayScene::update(int deltaTime)
 	}
 	
 
-	if (animationAndKeyframe[0] != EXPLOSION || !stopScrolling)
+	if (!stopScrolling)
 		tileMapDispl += 1;
-	else if (animationAndKeyframe[1] == 4) state = "MENU";
+	if (animationAndKeyframe[1] == 4) state = "MENU";
 	//else if (animationAndKeyframe[1] == 4 && player->num_lives > 0) state = "RETRY";
 
 
@@ -820,15 +821,18 @@ void PlayScene::render()
 
 void PlayScene::checkBullets() {
 	vector<Bullet*> activeBullets = bulletManager.ret_actBullets();
-	for (int i = 0; i < int(activeBullets.size()); ++i) {
+	for (int i = 0; i < int(activeBullets.size()-1); ++i) {
 
 		Bullet* b = activeBullets[i];
 
 		glm::vec2 bulletPosition = b->ret_pos();
 		if (bulletPosition != glm::vec2(0.0f, 0.0f) && map->collisionMoveRight(glm::ivec2(bulletPosition.x+tileMapDispl+35.0f, bulletPosition.y), glm::ivec2(8, 8))) {
-			b->~Bullet();
-			activeBullets.erase(activeBullets.begin() + i);
-			bulletManager.set_actBullets(activeBullets);
+			if (b->returnType() != 2) {
+				b->~Bullet();
+				activeBullets.erase(activeBullets.begin() + i);
+				bulletManager.set_actBullets(activeBullets);
+
+			}
 		}
 
 		//erase power shots once they've gone too far
@@ -840,16 +844,19 @@ void PlayScene::checkBullets() {
 		}
 
 		//intento de checkear si les bullets dels enemics colisionen amb el player
-		glm::vec2 bullet_pos = b->ret_pos();
-		glm::vec2 bullet_size = b->ret_size();
-		glm::vec2 player_pos = player->getPosition();
+		
+		glm::ivec2 posPlayer = player->getPosition();
 
-		bool collisionX = (((player_pos.x + 28) >= bullet_pos.x + tileMapDispl + 38.0f) &&
-			((bullet_pos.x + bullet_size.x + tileMapDispl + 38.0f) >= player_pos.x));
-		bool collisionY = (((bullet_pos.y + 6 + 1.5f) >= player_pos.y) &&
-			((player_pos.y + 16 + 1.5f) >= bullet_pos.y));
+		bool collisionX = ((activeBullets[i]->ret_pos().x >= posPlayer.x) &&
+			((posPlayer.x + 28) >= activeBullets[i]->ret_pos().x));
 
-		if (collisionX && collisionY) player->hit();
+		bool collisionY = ((activeBullets[i]->ret_pos().y + 9 >= posPlayer.y) &&
+			(posPlayer.y + 16) >= activeBullets[i]->ret_pos().y);
+		
+
+
+ 		if (collisionX && collisionY && !forceHit && !activeBullets[i]->ret_player_bullet())
+ 			player->hit();
 	}
 }
 
@@ -923,7 +930,7 @@ void PlayScene::checkEnemiesHits() {
 		
 
 		if (collisionX && collisionY)
-		{
+ 		{
 			player->hit();
 		}
 

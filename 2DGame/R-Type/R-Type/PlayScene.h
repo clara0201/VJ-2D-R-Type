@@ -68,8 +68,8 @@ private:
 	Texture forceUnitTex, blastTex;
 	Sprite *forceUnit, *blast;
 
-	Texture backgroundSpritesheet,  forceUnitTex;
-	Sprite* background, *forceUnit;
+	Texture backgroundSpritesheet;
+	Sprite* background;
 	BulletManager bulletManager;
 	string state;
 	MenuScene* menu;

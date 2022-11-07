@@ -104,6 +104,8 @@ void Enemy::init(const glm::vec2& tileMapPos, ShaderProgram& shaderProgram, Play
 
 	blastTex.loadFromFile("images/enemyExplosion.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	blast = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(1.0f, 1.0f), &blastTex, &shaderProgram);
+
+	
 }
 
 void Enemy::stopScrollingF() {
@@ -112,7 +114,10 @@ void Enemy::stopScrollingF() {
 void Enemy::update(int deltaTime)
 {
 	timeToMove--;
-	if (deathCooldown <=0 && blackSprite != NULL && blackSprite->animation() == 6) blackSprite->changeAnimation(7);
+	if (deathCooldown <= 0 && blackSprite != NULL && blackSprite->animation() == 6) { 
+		blackSprite->changeAnimation(7); 		
+		deathCooldown--;
+	}
 	deathCooldown--;
 	directionCooldown--;
 	if (posEnemy.y <= 10) 
@@ -222,6 +227,9 @@ bool Enemy::ret_direction() {
 	if (this != NULL)
 		return movingUp;
 	return 0;
+}
+bool Enemy::isFinished() {
+	return (blackSprite->animation() == 7);
 }
 void Enemy::changeDirection() {
 	if (this != NULL)

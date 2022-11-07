@@ -55,6 +55,7 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 	else if (typeOfBullet == BUTTERFLY) {
 		size.x = 6;
 		size.y = 6;
+		isPowerShot = false;
 
 		spritesheet.loadFromFile("images/butterflyBullet.png", TEXTURE_PIXEL_FORMAT_RGBA);
 		sprite = Sprite::createSprite(glm::ivec2(6, 6), glm::vec2(1.0f, 1.0f), &spritesheet, &shaderProgram);
@@ -66,6 +67,8 @@ void Bullet::createBullet(float posx, float posy, bool player, ShaderProgram& sh
 	else if (typeOfBullet == BOSS) {
 		size.x = 60;
 		size.y = 60;
+		isPowerShot = false;
+
 
 		spritesheet.loadFromFile("images/naveMasExplosion.png", TEXTURE_PIXEL_FORMAT_RGBA);
 		sprite = Sprite::createSprite(glm::ivec2(28, 16), glm::vec2(0.1, 1), &spritesheet, &shaderProgram);
