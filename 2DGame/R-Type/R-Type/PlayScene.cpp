@@ -83,7 +83,7 @@ void PlayScene::init()
 
 void PlayScene::initEnemies() {
 	
-	int number_of_enemies = 120; //cuantos enemigos hay en el nivel
+	int number_of_enemies = 130; //cuantos enemigos hay en el nivel
 
 	for (int i = 0; i < number_of_enemies; ++i) {
 		float enemy_x;
@@ -454,6 +454,35 @@ void PlayScene::initEnemies() {
 			enemy_x = 180.f; enemy_y = 8; typeofEnemy = BUTTERFLY;
 			break;
 		case 120:
+		case 121:
+			enemy_x = 500.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 122:
+			enemy_x = 502.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 123:
+			enemy_x = 504.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 124:
+			enemy_x = 506.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 125:
+			enemy_x = 508.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 126:
+			enemy_x = 510.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 127:
+			enemy_x = 512.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 128:
+			enemy_x = 514.f + 25; enemy_y = 4; typeofEnemy = BUTTERFLY;
+			break;
+		case 129:
+			enemy_x = 516.f + 25; enemy_y = 8; typeofEnemy = BUTTERFLY;
+			break;
+
+		case 130:
 			enemy_x = 190.f; enemy_y = 6; typeofEnemy = BOSS;
 			break;
 		}
@@ -599,7 +628,7 @@ void PlayScene::update(int deltaTime)
 
 
 	checkBullets();
-	moveEnemies();
+	//moveEnemies();
 
 	if(forceHit)checkForceHits();
 	checkHits();
