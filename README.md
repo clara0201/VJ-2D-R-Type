@@ -12,7 +12,7 @@ _Fight your way through the enemy base!_
 ---
 
 ## 🚀 **How to Play**  
-🔹 **Option 1:** Download the **Build RType** folder and run the executable file to play on Windows.  
+🔹 **Option 1:** Download the **Binari** folder and run the executable file to play on Windows.  
 
 ---
 
